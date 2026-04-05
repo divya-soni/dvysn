@@ -17,70 +17,43 @@
     "results": "Eliminated the need for complex PDF parsing while improving contextual understanding of diagrams, equations, and layouts. Reduced token usage (~250 tokens per page image) compared to text+image pipelines. Delivered a significantly smoother UX by removing friction from context switching and transforming long LLM outputs into conversational responses. Demonstrated that vision-based approaches can simplify architecture while maintaining strong accuracy for educational use cases."
   }
 },
-  {
-    "slug": "gql-codegen",
-    "title": "gql-codegen",
-    "description": "Generates fully type-safe TypeScript clients from GraphQL schemas. Zero runtime overhead — all types resolved at build time.",
-    "tags": ["TypeScript", "REST APIs", "NodeJS", "ReactJS", "LLMs"],
-    "year": "2024",
-    "role": "Author",
-    "language": "TypeScript",
-    "stars": 1,
-    "github": "https://github.com",
-    "demo": null,
-    "featured": false,
-    "writeup": {
-      "architecture": "Parses GraphQL schema files using the reference graphql-js parser, walks the AST to extract type and field definitions, and emits TypeScript interfaces that mirror the schema exactly. A watch mode re-runs on schema changes.",
-      "implementation": "Maps GraphQL scalar types to TypeScript primitives, handles nullable vs. non-null correctly, and supports custom scalar mappings via config. Output is fully deterministic for clean diffs in code review.",
-      "results": "Eliminated a class of runtime type errors where GraphQL response shapes diverged from TypeScript interfaces. Generates types for schemas with 200+ types in under 100ms."
-    },
-    "snippet": {
-      "language": "typescript",
-      "code": "// schema.graphql → generated TypeScript\n// Input:\n//   type User { id: ID!, email: String!, createdAt: DateTime! }\n\n// Auto-generated — do not edit\nexport interface User {\n  id: string;\n  email: string;\n  createdAt: string;\n}\n\n// Usage — fully typed at compile time\nconst result = await client.query<{ user: User }>(GET_USER, { id });\nconsole.log(result.user.email); // ✓ typed"
-    }
-  },
-  {
-    "slug": "oxidize",
-    "title": "oxidize",
-    "description": "Zero-copy binary protocol parser for Rust. Leverages the type system to guarantee memory safety without sacrificing performance.",
-    "tags": ["Rust", "Parsing", "Systems"],
-    "year": "2023",
-    "role": "Author",
-    "language": "Rust",
-    "stars": 41,
-    "github": "https://github.com",
-    "demo": null,
-    "featured": false,
-    "writeup": {
-      "architecture": "Parsing without allocation requires borrowing from the input buffer for the lifetime of the parsed value. The library models this with Rust lifetime parameters, so the compiler statically verifies that the input outlives any value derived from it.",
-      "implementation": "Provides a derive macro that generates a Parser impl for any struct with borrowed fields. Fixed-width fields are parsed as big-endian integers; variable-length fields use a length prefix read earlier in the frame. No unsafe code in user-facing APIs.",
-      "results": "Zero heap allocations on the hot path. Parses a 64-byte binary frame in ~12ns on an M2, compared to ~180ns for an equivalent approach using Vec<u8>."
-    },
-    "snippet": {
-      "language": "rust",
-      "code": "#[derive(Protocol)]\nstruct Frame<'a> {\n  version: u8,\n  flags:   u16,\n  body:    &'a [u8],  // zero-copy borrow from input\n}\n\nfn parse(buf: &[u8]) -> Result<Frame<'_>, Error> {\n  Frame::parse(buf)  // no allocation\n}"
-    }
-  },
-  {
-    "slug": "tensors",
-    "title": "tensors",
-    "description": "Lightweight Python tensor library with NumPy-compatible API, written from scratch to understand autodiff and backpropagation.",
-    "tags": ["Python", "ML", "NumPy"],
-    "year": "2022",
-    "role": "Author",
-    "language": "Python",
-    "stars": 27,
-    "github": "https://github.com",
-    "demo": null,
-    "featured": false,
-    "writeup": {
-      "architecture": "Each Tensor wraps a NumPy array and carries a closure that computes the gradient contribution to its inputs. The forward pass builds an implicit computation graph; calling .backward() traverses it in reverse topological order, accumulating gradients.",
-      "implementation": "Pure Python with NumPy for array operations. Implements +, *, matmul, relu, and sigmoid with correct gradient formulas. Supports batched operations — gradient accumulation handles broadcasting automatically.",
-      "results": "Trains a two-layer MLP on MNIST to 97.4% accuracy in ~60 seconds on CPU. Matches PyTorch output on identical network architectures and learning rates."
-    },
-    "snippet": {
-      "language": "python",
-      "code": "class Tensor:\n    def __init__(self, data):\n        self.data = np.array(data)\n        self.grad = None\n        self._backward = lambda: None\n\n    def __matmul__(self, other):\n        out = Tensor(self.data @ other.data)\n        def _backward():\n            self.grad  += out.grad @ other.data.T\n            other.grad += self.data.T @ out.grad\n        out._backward = _backward\n        return out"
-    }
+
+{
+  "slug": "png-to-psd",
+  "title": "A png-to-psd Converter",
+  "description": "Pipeline that converts flat images into layered PSDs using segmentation masks from Meta’s Segment Anything Model and scripted GIMP integration.",
+  "tags": ["Python", "Schema", "React", "GIMP", "SAM"],
+  "year": "2024",
+  "role": "Author",
+  "language": "Python",
+  "stars": 0,
+  "github": null,
+  "demo": null,
+  "featured": false,
+  "writeup": {
+    "architecture": "User uploads an image through a React frontend. The backend sends the image to SAM via Replicate to generate segmentation masks. Python processes these masks to reduce overlaps and extract layer candidates. The processed layers are then passed to a GIMP Script-Fu script, which assembles them into a PSD file and exports the result.",
+    "implementation": "Segmentation handled by SAM through Replicate API. Post-processing done in Python to clean and merge masks. GIMP scripting (Script-Fu in Scheme) used to programmatically construct layered images and export PSDs. Lightweight React UI for interaction.",
+    "results": "Produces PSD files with dozens of automatically generated layers from a single input image in ~1 minute. Demonstrates feasibility of automated image decomposition, but outputs are noisy, with overlapping and redundant layers requiring manual cleanup."
   }
+},
+{
+  "slug": "clive",
+  "title": "Clive",
+  "description": "React-based web app for analyzing and discussing YouTube videos through an interactive, chat-like interface with optional spoiler control.",
+  "tags": ["React", "LLMs", "Frontend", "Vite", "TailwindCSS"],
+  "year": "2025",
+  "role": "Author",
+  "language": "TypeScript",
+  "stars": 0,
+  "github": null,
+  "demo": null,
+  "featured": false,
+  "writeup": {
+    "architecture": "Single-page React application where users input a YouTube URL and interact with the content through a conversational interface. Routing handled via React Router, with UI state managing modes like spoiler control and chat flow.",
+    "implementation": "Built using React with Vite for fast development and bundling. TailwindCSS used for styling and responsive layouts. ESLint configured with React Hooks and React Refresh plugins to maintain code quality and developer experience.",
+    "results": "Enables users to explore and discuss YouTube videos interactively, with a focus on usability and spoiler control. Provides a smooth experience across desktop and mobile devices."
+  }
+}
+
+
 ]

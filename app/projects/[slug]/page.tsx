@@ -54,7 +54,7 @@ export default async function ProjectDetail({
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-[13px] font-medium h-10 px-5 border border-foreground bg-foreground text-background flex items-center hover:opacity-90 transition-opacity duration-100"
+            className="font-mono text-[13px] font-medium h-8 px-4 border border-foreground bg-foreground text-background flex items-center hover:opacity-90 transition-opacity duration-100"
           >
             View Source →
           </a>
@@ -63,7 +63,7 @@ export default async function ProjectDetail({
               href={project.demo}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-[13px] h-10 px-5 border border-foreground text-foreground flex items-center hover:bg-foreground hover:text-background transition-colors duration-100"
+              className="font-mono text-[13px] h-8 px-4 border border-foreground text-foreground flex items-center hover:bg-foreground hover:text-background transition-colors duration-100"
             >
               Live Demo ↗
             </a>

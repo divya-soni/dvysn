@@ -17,24 +17,26 @@ export default function MarkdownContent({ html }: { html: string }) {
 
       const wrapper = document.createElement('div');
       wrapper.className =
-        'code-block border border-[#27272A] my-6 rounded-[4px] overflow-hidden';
+        'code-block border border-line my-6 rounded-[4px] overflow-hidden';
 
       const bar = document.createElement('div');
       bar.className =
-        'flex items-center justify-between px-4 py-2.5 border-b border-[#27272A] bg-[#18181B]';
+        'flex items-center justify-between px-4 py-2.5 border-b border-line bg-surface';
       bar.innerHTML = `
         <div class="flex items-center gap-1.5">
-          <span class="w-3 h-3 rounded-full bg-[#27272A] block"></span>
-          <span class="w-3 h-3 rounded-full bg-[#27272A] block"></span>
-          <span class="w-3 h-3 rounded-full bg-[#27272A] block"></span>
+          <span class="w-3 h-3 rounded-full bg-line block"></span>
+          <span class="w-3 h-3 rounded-full bg-line block"></span>
+          <span class="w-3 h-3 rounded-full bg-line block"></span>
         </div>
-        <button class="copy-btn font-mono text-[11px] text-[#A1A1AA] hover:text-[#FAFAFA] transition-colors duration-100">copy</button>
+        <button class="copy-btn font-mono text-[11px] text-muted hover:text-foreground transition-colors duration-100">copy</button>
       `;
 
-      pre.className = 'bg-black p-5 overflow-x-auto m-0';
+      pre.className = 'p-5 overflow-x-auto m-0';
+      pre.style.background = 'var(--code-bg)';
       if (code) {
         code.className =
-          'font-mono text-[13px] leading-relaxed whitespace-pre text-white/90';
+          'font-mono text-[13px] leading-relaxed whitespace-pre';
+        code.style.color = 'var(--code-text)';
       }
 
       pre.parentNode!.insertBefore(wrapper, pre);

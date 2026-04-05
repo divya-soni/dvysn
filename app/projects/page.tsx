@@ -13,7 +13,7 @@ export default function ProjectsPage() {
           Projects
         </h1>
         <p className="text-[15px] text-muted">
-          Open source work, experiments, and shipped software.
+          A few things I&apos;ve built recently. More fun stuff coming soon!
         </p>
       </div>
       <ProjectsGrid projects={projects} />

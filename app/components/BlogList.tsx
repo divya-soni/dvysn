@@ -35,15 +35,15 @@ export default function BlogList({ posts }: Props) {
           </p>
         </div>
       ) : (
-        <div>
+        <div className="border-b border-line">
           {filtered.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
               className="group block border-t border-line py-6 -mx-6 px-6 hover:bg-surface transition-colors duration-100"
             >
-              <div className="flex items-start gap-6">
-                <time className="font-mono text-[13px] text-muted flex-shrink-0 pt-1 w-[108px]">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-6">
+                <time className="font-mono text-[13px] text-muted flex-shrink-0 sm:pt-1 sm:w-[108px]">
                   {post.date}
                 </time>
                 <div>

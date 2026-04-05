@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Tag from '@/app/components/Tag';
 import type { Project } from '@/app/data/projects';
 
-const FILTERS = ['All', 'Go', 'TypeScript', 'Rust', 'Python'];
+const FILTERS = [''];
 
 interface Props {
   projects: Project[];
@@ -19,12 +19,12 @@ export default function ProjectsGrid({ projects }: Props) {
 
   return (
     <>
-      <div className="flex gap-2 mb-10 flex-wrap">
+      {/* <div className="flex gap-2 mb-10 flex-wrap">
         {FILTERS.map((tag) => (
           <button
             key={tag}
             onClick={() => setActive(tag)}
-            className={`font-mono text-[13px] h-8 px-4 border transition-colors duration-100 ${
+            className={`font-mono text-[13px] h-8 px-4 border transition-colors duration-100 focus-visible:outline-primary ${
               active === tag
                 ? 'bg-foreground text-background border-foreground'
                 : 'border-line text-muted hover:text-foreground hover:border-muted'
@@ -33,7 +33,7 @@ export default function ProjectsGrid({ projects }: Props) {
             {tag}
           </button>
         ))}
-      </div>
+      </div> */}
 
       {filtered.length === 0 ? (
         <p className="font-mono text-[13px] text-muted py-16 border-t border-line">
@@ -46,12 +46,12 @@ export default function ProjectsGrid({ projects }: Props) {
           </button>
         </p>
       ) : (
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {filtered.map((p) => (
             <Link
               key={p.slug}
               href={`/projects/${p.slug}`}
-              className="group border border-line p-5 hover:-translate-y-0.5 transition-transform duration-150"
+              className="group border border-line p-5 hover:border-primary transition-colors duration-150"
             >
               <div className="flex items-start justify-between gap-2 mb-2">
                 <h3 className="text-[16px] font-semibold text-foreground group-hover:text-primary transition-colors duration-100">
