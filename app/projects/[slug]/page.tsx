@@ -51,7 +51,7 @@ export default async function ProjectDetail({
         </div>
         <div className="flex gap-3">
           <a
-            href={project.github}
+            href={project.github ?? undefined}
             target="_blank"
             rel="noopener noreferrer"
             className="font-mono text-[13px] font-medium h-8 px-4 border border-foreground bg-foreground text-background flex items-center hover:opacity-90 transition-opacity duration-100"
