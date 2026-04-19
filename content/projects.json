@@ -53,7 +53,25 @@
     "implementation": "Built using React with Vite for fast development and bundling. TailwindCSS used for styling and responsive layouts. ESLint configured with React Hooks and React Refresh plugins to maintain code quality and developer experience.",
     "results": "Enables users to explore and discuss YouTube videos interactively, with a focus on usability and spoiler control. Provides a smooth experience across desktop and mobile devices."
   }
-}
+},
+{                                                    
+    "slug": "tally-expense-tracker",                                                                                                                  
+    "title": "Tally — Telegram Expense Tracker",                                                                                                      
+    "description": "Telegram bot that logs expenses from natural-language text or voice notes, parses them with an LLM, and writes structured rows to Google Sheets.",                                                                                                                                    
+    "tags": ["Python", "Telegram", "LLM", "Google Sheets", "Replicate"],
+    "year": "2026",
+    "role": "Author",
+    "language": "Python",
+    "stars": 0,
+    "github": "https://github.com/divya-soni/expense-tracking-agent",
+    "demo": null,
+    "featured": false,
+    "writeup": {
+      "architecture": "User sends a text or voice message to a Telegram bot. Text messages are passed directly to an LLM (Qwen via OpenRouter) which extracts structured expense fields (amount, category, notes) and returns JSON. Voice notes are first transcribed via Replicate (GPT-4o Mini Transcribe), then follow the same LLM path. Validated output is appended as a row to Google Sheets via the Sheets API. A /summary command aggregates the current month's spend by category and uses the LLM to generate a one-line observation.",
+      "implementation": "Bot built with python-telegram-bot. LLM calls go through OpenRouter's chat completions API using Qwen-Turbo, with a strict system prompt that enforces JSON output and defines 11 spending categories. Output validation checks amount, category membership, and notes length before writing to Sheets. Speech-to-text handled asynchronously via Replicate. The system prompt includes explicit prompt injection defences so user messages are treated as data only. /undo deletes the most recently appended Sheets row.",
+      "results": "Handles the full loop — voice or text in, categorised row in Google Sheets out — with no manual data entry. Works reliably for casual phrasing like '500 on groceries' or 'paid 1200 for electricity'. The main limitation is dependency on OpenRouter uptime and Replicate latency for voice notes (~2-4s transcription round-trip)."
+    }
+  }
 
 
 ]

@@ -21,7 +21,7 @@ export interface Project {
   role: string;
   language: string;
   stars: number;
-  github: string;
+  github: string | null;
   demo: string | null;
   featured: boolean;
   writeup?: ProjectWriteup;
@@ -35,3 +35,4 @@ export function getProject(slug: string): Project | undefined {
 }
 
 export const featuredProjects = projects.filter((p) => p.featured);
+ 
