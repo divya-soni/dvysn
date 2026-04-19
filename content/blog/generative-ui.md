@@ -1,7 +1,7 @@
 ---
 title: The Textbox Should Not Be the Future of AI
 date: 2026-04-19
-excerpt: Ever since AI started getting integrated into every product, one thing has been bothering me: why does every experience now begin with the same chat box? I love what language models can do, but I’m not convinced that typing into a textbox is the best interface for everything.
+excerpt: "Ever since AI started getting integrated into every product, one thing has been bothering me: why does every experience now begin with the same chat box? I love what language models can do, but I’m not convinced that typing into a textbox is the best interface for everything."
 ---
 
 ## ChatGPT Changed More Than AI
