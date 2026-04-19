@@ -64,7 +64,7 @@
     "language": "Python",
     "stars": 0,
     "github": "https://github.com/divya-soni/expense-tracking-agent",
-    "demo": null,
+    "demo": "https://x.com/thedivyasoni/status/2045856430318907670",
     "featured": false,
     "writeup": {
       "architecture": "User sends a text or voice message to a Telegram bot. Text messages are passed directly to an LLM (Qwen via OpenRouter) which extracts structured expense fields (amount, category, notes) and returns JSON. Voice notes are first transcribed via Replicate (GPT-4o Mini Transcribe), then follow the same LLM path. Validated output is appended as a row to Google Sheets via the Sheets API. A /summary command aggregates the current month's spend by category and uses the LLM to generate a one-line observation.",
