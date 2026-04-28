@@ -1,5 +1,23 @@
 [
 {
+  "slug": "tool-calling",
+  "title": "Tool Calling CLI",
+  "description": "A small Node.js experiment that makes tool calling visible: the model returns fixed command tokens, the CLI parses them, asks for confirmation, and executes CRUD-style directory actions locally.",
+  "tags": ["Node.js", "LLMs", "Tool Calling", "CLI", "Agent Systems"],
+  "year": "2026",
+  "role": "Author",
+  "language": "JavaScript",
+  "stars": 0,
+  "github": "https://github.com/divya-soni/tool-calling",
+  "demo": "https://www.linkedin.com/posts/divya-soni14_how-tool-calling-works-in-systems-like-claude-activity-7454595502756638720-E1qD?utm_source=share&utm_medium=member_desktop&rcm=ACoAAB6V9FkBygg0fGvsWwaC9kXINUoaUli3dXM",
+  "featured": true,
+  "writeup": {
+    "architecture": "This project is a stripped-down tool-calling loop built to make the mechanics obvious. A user types into a CLI, the request is sent to an LLM, and the model is instructed through the system prompt to either answer normally or emit a hard-coded command token. The surrounding application then interprets that token and maps it to a real local action such as clearing the screen, listing files, creating a directory, renaming it, or deleting it.",
+    "implementation": "The interesting part is not the CRUD operations themselves, but the protocol around them. Each tool is described to the model with an exact output format, so the model learns to respond with tokens that the script can parse deterministically. Once a command token is detected, the app extracts the arguments, routes execution through a switch-style handler, and runs the matching local command. In the demo, the loop also keeps enough conversational history for follow-up requests like 'rename it' or 'delete the directory' to resolve correctly from context.",
+    "results": "The prototype turned tool calling from a black box into something inspectable. It shows that the model itself is only producing text, while the real capability comes from application code that validates, parses, and executes that text against system tools. Even with a tiny command set, the demo makes the jump from chatbot to agent feel concrete and points toward obvious extensions like file editing, process inspection, and richer safety checks."
+  }
+},
+{
   "slug": "mira",
   "title": "Mira",
   "description": "A vision-first AI reading assistant that acts like a \"Cursor for textbooks\"—understands pages in real time and provides contextual explanations with minimal friction.",
