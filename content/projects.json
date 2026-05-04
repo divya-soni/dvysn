@@ -1,5 +1,23 @@
 [
 {
+  "slug": "memgpt-prototype",
+  "title": "MemGPT Prototype",
+  "description": "A Node.js CLI agent inspired by the MemGPT paper that experiments with working memory, recall storage, eviction, and summarized context for long-running conversations.",
+  "tags": ["Node.js", "LLMs", "PostgreSQL", "pgvector", "Agent Systems"],
+  "year": "2026",
+  "role": "Author",
+  "language": "JavaScript",
+  "stars": 0,
+  "github": "https://github.com/divya-soni/memgpt-prototype",
+  "demo": null,
+  "featured": false,
+  "writeup": {
+    "architecture": "This prototype was built to make the MemGPT idea concrete: instead of treating the context window as a fixed hard limit, the agent manages an active working set and moves older information into external memory. Recent conversation lives in a FIFO queue, full messages are persisted in PostgreSQL, and older context can be recalled later through keyword search and summary-based memory. The overall design mirrors operating-system ideas like virtual memory, where the model gets the illusion of a much larger memory space than what fits in the prompt at once.",
+    "implementation": "The system is a terminal-based Node.js agent built with OpenRouter, the OpenAI SDK, PostgreSQL, pgvector, and dotenv. A queue manager sits between the user, the model, active context, recall storage, and memory updates. When memory pressure rises, older context is evicted, summarized recursively, and stored so the active context stays small but useful. The agent also supports heartbeat-style continuation after tool-like model responses, along with detailed logging around eviction, recall search, working-memory updates, and LLM/database timings to make behavior easier to inspect while testing.",
+    "results": "The project turned a research paper into something operational that could be run, stressed, and reasoned about. Building it made the tradeoffs of long-running agents much easier to understand, especially why explicit memory management matters more than simply stuffing more tokens into the prompt. The queue manager ended up being the most interesting part because it coordinates what stays active, what gets compressed, what is searchable later, and how the model regains access to prior context."
+  }
+},
+{
   "slug": "tool-calling",
   "title": "Tool Calling CLI",
   "description": "A small Node.js experiment that makes tool calling visible: the model returns fixed command tokens, the CLI parses them, asks for confirmation, and executes CRUD-style directory actions locally.",
