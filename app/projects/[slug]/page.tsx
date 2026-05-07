@@ -1,11 +1,11 @@
-import { notFound } from "next/navigation";
 import Link from "next/link";
-import { projects, getProject } from "../../data/projects";
+import { notFound } from "next/navigation";
 import CodeBlock from "../../components/CodeBlock";
 import Tag from "../../components/Tag";
+import { getProject, projects } from "../../data/projects";
 
 export async function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  return projects.map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({
@@ -15,6 +15,7 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const project = getProject(slug);
+
   return {
     title: project ? `${project.title} — Divya Soni` : "Not Found",
   };
@@ -32,46 +33,52 @@ export default async function ProjectDetail({
   const { writeup, snippet } = project;
 
   return (
-    <main className="max-w-[640px] mx-auto px-6 py-24">
+    <main className="mx-auto max-w-[780px] px-5 py-16 sm:px-6 sm:py-20">
       <Link
         href="/projects"
-        className="font-mono text-[13px] text-muted hover:text-primary transition-colors duration-100 mb-10 inline-block"
+        className="mb-10 inline-flex items-center text-sm font-medium text-muted transition-colors duration-150 hover:text-primary"
       >
-        ← projects
+        ← Projects
       </Link>
 
-      <div className="mb-10">
-        <h1 className="text-5xl font-semibold tracking-[-0.02em] text-foreground mb-4">
+      <header className="mb-10">
+        <p className="mb-3 text-sm font-medium uppercase tracking-[0.14em] text-primary">
+          {project.role}
+        </p>
+        <h1 className="text-4xl font-semibold leading-tight tracking-normal text-foreground sm:text-5xl">
           {project.title}
         </h1>
-        <div className="flex items-center gap-6 mb-6">
-          <span className="font-mono text-[13px] text-muted">{project.year}</span>
-          <span className="font-mono text-[13px] text-muted">{project.role}</span>
-          <span className="font-mono text-[13px] text-muted">{project.language}</span>
+        <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
+          <span>{project.year}</span>
+          <span>{project.language}</span>
+          <span>{project.stars} stars</span>
         </div>
-        <div className="flex gap-3">
-          <a
-            href={project.github ?? undefined}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-[13px] font-medium h-8 px-4 border border-foreground bg-foreground text-background flex items-center hover:opacity-90 transition-opacity duration-100"
-          >
-            View Source →
-          </a>
+        <p className="mt-6 text-lg leading-8 text-muted">{project.description}</p>
+        <div className="mt-7 flex flex-wrap gap-3">
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 items-center rounded-full bg-foreground px-4 text-sm font-medium text-background transition-opacity duration-150 hover:opacity-90"
+            >
+              View Source →
+            </a>
+          )}
           {project.demo && (
             <a
               href={project.demo}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-[13px] h-8 px-4 border border-foreground text-foreground flex items-center hover:bg-foreground hover:text-background transition-colors duration-100"
+              className="inline-flex h-10 items-center rounded-full border border-line bg-surface px-4 text-sm font-medium text-foreground transition-colors duration-150 hover:border-primary/40 hover:text-primary"
             >
-              Live Demo ↗
+              Live Demo →
             </a>
           )}
         </div>
-      </div>
+      </header>
 
-      <div className="prose">
+      <article className="prose">
         <h2>Overview</h2>
         <p>{project.description}</p>
 
@@ -91,9 +98,7 @@ export default async function ProjectDetail({
           </>
         )}
 
-        {snippet && (
-          <CodeBlock code={snippet.code} language={snippet.language} />
-        )}
+        {snippet && <CodeBlock code={snippet.code} language={snippet.language} />}
 
         {writeup?.results && (
           <>
@@ -102,10 +107,12 @@ export default async function ProjectDetail({
           </>
         )}
 
-        <div className="flex flex-wrap gap-2 mt-8">
-          {project.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        <div className="mt-8 flex flex-wrap gap-2">
+          {project.tags.map((tag) => (
+            <Tag key={tag}>{tag}</Tag>
+          ))}
         </div>
-      </div>
+      </article>
     </main>
   );
 }

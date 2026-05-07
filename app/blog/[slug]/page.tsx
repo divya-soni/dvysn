@@ -1,11 +1,11 @@
-import { notFound } from "next/navigation";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { marked } from "marked";
 import { getAllPosts, getPost } from "@/lib/blog";
 import MarkdownContent from "../../components/MarkdownContent";
 
 export async function generateStaticParams() {
-  return getAllPosts().map((p) => ({ slug: p.slug }));
+  return getAllPosts().map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -15,6 +15,7 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const post = getPost(slug);
+
   return {
     title: post ? `${post.title} — Divya Soni` : "Not Found",
   };
@@ -32,25 +33,23 @@ export default async function BlogPost({
   const html = await marked(post.content, { gfm: true });
 
   return (
-    <main className="max-w-[640px] mx-auto px-6 py-24">
+    <main className="mx-auto max-w-[740px] px-5 py-16 sm:px-6 sm:py-20">
       <Link
         href="/blog"
-        className="font-mono text-[13px] text-muted hover:text-primary transition-colors duration-100 mb-10 inline-block"
+        className="mb-10 inline-flex items-center text-sm font-medium text-muted transition-colors duration-150 hover:text-primary"
       >
-        ← writing
+        ← Writing
       </Link>
 
-      <div className="mb-10">
-        <div className="flex items-center gap-5 mb-4">
-          <time className="font-mono text-[13px] text-muted">{post.date}</time>
-          <span className="font-mono text-[13px] text-muted">
-            {post.readTime}
-          </span>
+      <header className="mb-10">
+        <div className="mb-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted">
+          <time>{post.date}</time>
+          <span>{post.readTime}</span>
         </div>
-        <h1 className="text-[40px] font-semibold tracking-[-0.02em] text-foreground leading-tight">
+        <h1 className="text-4xl font-semibold leading-tight tracking-normal text-foreground sm:text-5xl">
           {post.title}
         </h1>
-      </div>
+      </header>
 
       <MarkdownContent html={html} />
     </main>

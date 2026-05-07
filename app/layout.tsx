@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import ThemeToggle from "./components/ThemeToggle";
-import Starfield from "./components/Starfield";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,51 +32,54 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.classList.add('dark')}catch(e){}` }} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.classList.add('dark')}catch(e){}`,
+          }}
+        />
       </head>
       <body className="min-h-screen bg-background text-foreground">
-        <Starfield />
-        <div className="relative z-10">
-          <header className="fixed top-0 inset-x-0 z-50 h-14 border-b border-line bg-background/80 backdrop-blur-[12px]">
-            <div className="max-w-[800px] mx-auto h-full px-6 flex items-center justify-between">
+        <header className="sticky top-0 z-50 border-b border-line bg-background/86 backdrop-blur-xl">
+          <div className="mx-auto flex h-16 max-w-[980px] items-center justify-between px-5 sm:px-6">
+            <Link
+              href="/"
+              className="text-sm font-semibold tracking-normal text-foreground transition-colors duration-150 hover:text-primary"
+            >
+              dvysn
+            </Link>
+            <nav className="flex items-center gap-2 sm:gap-3">
               <Link
-                href="/"
-                className="font-mono text-sm text-foreground hover:text-primary transition-colors duration-100"
+                href="/projects"
+                className="rounded-full px-3 py-2 text-sm text-muted transition-colors duration-150 hover:bg-surface-soft hover:text-foreground"
               >
-                dvysn<span className="text-primary animate-pulse">_</span>
+                projects
               </Link>
-              <nav className="flex items-center gap-4 sm:gap-8">
-                <Link
-                  href="/projects"
-                  className="font-mono text-[13px] text-muted hover:text-primary transition-colors duration-100"
-                >
-                  projects
-                </Link>
-                <Link
-                  href="/blog"
-                  className="font-mono text-[13px] text-muted hover:text-primary transition-colors duration-100"
-                >
-                  blog
-                </Link>
-                <a
-                  href="https://github.com/divya-soni-14"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-mono text-[13px] text-muted hover:text-primary transition-colors duration-100"
-                >
-                  github ↗
-                </a>
-                <ThemeToggle />
-              </nav>
-            </div>
-          </header>
-          <div className="pt-14">{children}</div>
-          <footer className="max-w-[800px] mx-auto px-6 py-10 border-t border-line">
-            <p className="font-mono text-[12px] text-muted text-center">
+              <Link
+                href="/blog"
+                className="rounded-full px-3 py-2 text-sm text-muted transition-colors duration-150 hover:bg-surface-soft hover:text-foreground"
+              >
+                blog
+              </Link>
+              <a
+                href="https://github.com/divya-soni"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden rounded-full px-3 py-2 text-sm text-muted transition-colors duration-150 hover:bg-surface-soft hover:text-foreground sm:inline-flex"
+              >
+                github
+              </a>
+              <ThemeToggle />
+            </nav>
+          </div>
+        </header>
+        {children}
+        <footer className="mx-auto max-w-[980px] px-5 py-10 sm:px-6">
+          <div className="border-t border-line pt-8">
+            <p className="text-center text-sm text-muted">
               built with next.js, tailwind, and mass amounts of tokens
             </p>
-          </footer>
-        </div>
+          </div>
+        </footer>
       </body>
     </html>
   );

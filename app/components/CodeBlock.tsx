@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 interface Props {
   code: string;
@@ -17,31 +17,31 @@ export default function CodeBlock({ code, language }: Props) {
   };
 
   return (
-    <div className="border border-line my-6 rounded-[4px] overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-line bg-surface">
+    <div className="my-8 overflow-hidden rounded-lg border border-line bg-surface shadow-[var(--shadow-soft)]">
+      <div className="flex items-center justify-between border-b border-line bg-surface-soft px-4 py-3">
         <div className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-line" />
-          <span className="w-3 h-3 rounded-full bg-line" />
-          <span className="w-3 h-3 rounded-full bg-line" />
+          <span className="h-2.5 w-2.5 rounded-full bg-line" />
+          <span className="h-2.5 w-2.5 rounded-full bg-line" />
+          <span className="h-2.5 w-2.5 rounded-full bg-line" />
         </div>
         <div className="flex items-center gap-4">
           {language && (
-            <span className="font-mono text-[11px] text-muted">{language}</span>
+            <span className="font-mono text-[11px] text-muted">
+              {language}
+            </span>
           )}
           <button
             onClick={handleCopy}
-            className={`font-mono text-[11px] transition-colors duration-100 ${
-              copied
-                ? 'text-emerald-500'
-                : 'text-muted hover:text-foreground'
+            className={`font-mono text-[11px] transition-colors duration-150 ${
+              copied ? "text-emerald-500" : "text-muted hover:text-foreground"
             }`}
           >
-            {copied ? '✓ copied' : 'copy'}
+            {copied ? "✓ copied" : "copy"}
           </button>
         </div>
       </div>
-      <pre className="bg-black p-5 overflow-x-auto">
-        <code className="font-mono text-[13px] text-foreground/90 leading-relaxed whitespace-pre">
+      <pre className="overflow-x-auto bg-[var(--code-bg)] p-5">
+        <code className="whitespace-pre font-mono text-[13px] leading-relaxed text-[var(--code-text)]">
           {code}
         </code>
       </pre>

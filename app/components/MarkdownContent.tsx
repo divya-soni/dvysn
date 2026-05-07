@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export default function MarkdownContent({ html }: { html: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -9,48 +9,48 @@ export default function MarkdownContent({ html }: { html: string }) {
     const container = ref.current;
     if (!container) return;
 
-    container.querySelectorAll('pre').forEach((pre) => {
-      if (pre.parentElement?.classList.contains('code-block')) return;
+    container.querySelectorAll("pre").forEach((pre) => {
+      if (pre.parentElement?.classList.contains("code-block")) return;
 
-      const code = pre.querySelector('code');
-      const text = code?.textContent ?? '';
+      const code = pre.querySelector("code");
+      const text = code?.textContent ?? "";
 
-      const wrapper = document.createElement('div');
+      const wrapper = document.createElement("div");
       wrapper.className =
-        'code-block border border-line my-6 rounded-[4px] overflow-hidden';
+        "code-block my-8 overflow-hidden rounded-lg border border-line bg-surface shadow-[var(--shadow-soft)]";
 
-      const bar = document.createElement('div');
+      const bar = document.createElement("div");
       bar.className =
-        'flex items-center justify-between px-4 py-2.5 border-b border-line bg-surface';
+        "flex items-center justify-between border-b border-line bg-surface-soft px-4 py-3";
       bar.innerHTML = `
         <div class="flex items-center gap-1.5">
-          <span class="w-3 h-3 rounded-full bg-line block"></span>
-          <span class="w-3 h-3 rounded-full bg-line block"></span>
-          <span class="w-3 h-3 rounded-full bg-line block"></span>
+          <span class="block h-2.5 w-2.5 rounded-full bg-line"></span>
+          <span class="block h-2.5 w-2.5 rounded-full bg-line"></span>
+          <span class="block h-2.5 w-2.5 rounded-full bg-line"></span>
         </div>
-        <button class="copy-btn font-mono text-[11px] text-muted hover:text-foreground transition-colors duration-100">copy</button>
+        <button class="copy-btn font-mono text-[11px] text-muted transition-colors duration-150 hover:text-foreground">copy</button>
       `;
 
-      pre.className = 'p-5 overflow-x-auto m-0';
-      pre.style.background = 'var(--code-bg)';
+      pre.className = "m-0 overflow-x-auto p-5";
+      pre.style.background = "var(--code-bg)";
       if (code) {
         code.className =
-          'font-mono text-[13px] leading-relaxed whitespace-pre';
-        code.style.color = 'var(--code-text)';
+          "whitespace-pre font-mono text-[13px] leading-relaxed";
+        code.style.color = "var(--code-text)";
       }
 
       pre.parentNode!.insertBefore(wrapper, pre);
       wrapper.appendChild(bar);
       wrapper.appendChild(pre);
 
-      const btn = bar.querySelector('.copy-btn') as HTMLButtonElement;
-      btn.addEventListener('click', async () => {
+      const btn = bar.querySelector(".copy-btn") as HTMLButtonElement;
+      btn.addEventListener("click", async () => {
         await navigator.clipboard.writeText(text);
-        btn.textContent = '✓ copied';
-        btn.style.color = '#10B981';
+        btn.textContent = "✓ copied";
+        btn.style.color = "#10b981";
         setTimeout(() => {
-          btn.textContent = 'copy';
-          btn.style.color = '';
+          btn.textContent = "copy";
+          btn.style.color = "";
         }, 2000);
       });
     });

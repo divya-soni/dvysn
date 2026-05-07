@@ -1,59 +1,58 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import type { Post } from '@/lib/blog';
+import { useState } from "react";
+import Link from "next/link";
+import type { Post } from "@/lib/blog";
 
 interface Props {
   posts: Post[];
 }
 
 export default function BlogList({ posts }: Props) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   const filtered = posts.filter(
-    (p) =>
-      p.title.toLowerCase().includes(query.toLowerCase()) ||
-      p.excerpt.toLowerCase().includes(query.toLowerCase()),
+    (post) =>
+      post.title.toLowerCase().includes(query.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(query.toLowerCase()),
   );
 
   return (
     <>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="> search articles..."
-        className="w-full h-10 border border-line bg-transparent px-4 mb-8 font-mono text-[13px] text-foreground placeholder:text-muted focus:outline-none focus:border-primary transition-colors duration-100"
-      />
+      <label className="mb-8 block">
+        <span className="sr-only">Search articles</span>
+        <input
+          type="text"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Search articles..."
+          className="h-12 w-full rounded-lg border border-line bg-surface px-4 text-sm text-foreground shadow-[var(--shadow-soft)] transition-colors duration-150 placeholder:text-muted focus:border-primary focus:outline-none"
+        />
+      </label>
 
       {filtered.length === 0 ? (
-        <div className="py-16 border-t border-line text-center">
-          <p className="font-mono text-[13px] text-muted">
-            No articles found{' '}
-            <span className="text-primary animate-pulse">_</span>
-          </p>
+        <div className="rounded-lg border border-line bg-surface px-5 py-16 text-center shadow-[var(--shadow-soft)]">
+          <p className="text-sm text-muted">No articles found.</p>
         </div>
       ) : (
-        <div className="border-b border-line">
+        <div className="divide-y divide-line rounded-lg border border-line bg-surface shadow-[var(--shadow-soft)]">
           {filtered.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group block border-t border-line py-6 -mx-6 px-6 hover:bg-surface transition-colors duration-100"
+              className="group grid gap-2 p-5 transition-colors duration-150 hover:bg-surface-soft sm:grid-cols-[116px_1fr]"
             >
-              <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-6">
-                <time className="font-mono text-[13px] text-muted flex-shrink-0 sm:pt-1 sm:w-[108px]">
-                  {post.date}
-                </time>
-                <div>
-                  <h2 className="text-[18px] font-medium text-foreground mb-1.5 group-hover:text-primary transition-colors duration-100">
-                    {post.title}
-                  </h2>
-                  <p className="text-[15px] text-muted leading-relaxed">
-                    {post.excerpt}
-                  </p>
-                </div>
+              <time className="text-sm text-muted sm:pt-1">{post.date}</time>
+              <div>
+                <h2 className="text-xl font-semibold text-foreground transition-colors duration-150 group-hover:text-primary">
+                  {post.title}
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-muted">
+                  {post.excerpt}
+                </p>
+                <p className="mt-3 text-xs font-medium uppercase tracking-[0.12em] text-muted">
+                  {post.readTime}
+                </p>
               </div>
             </Link>
           ))}

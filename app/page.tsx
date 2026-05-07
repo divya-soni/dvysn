@@ -1,10 +1,10 @@
-import Link from "next/link";
 import Image from "next/image";
-import Tag from "./components/Tag";
-import FadeIn from "./components/FadeIn";
-import { featuredProjects } from "./data/projects";
+import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
-import profile_img from "../public/avatar.jpeg"
+import FadeIn from "./components/FadeIn";
+import Tag from "./components/Tag";
+import { featuredProjects } from "./data/projects";
+import profileImg from "../public/avatar.jpeg";
 
 const socials = [
   {
@@ -38,7 +38,16 @@ const socials = [
     label: "Email",
     href: "mailto:divya.rajeshsoni@gmail.com",
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      >
         <rect x="2" y="4" width="20" height="16" rx="2" />
         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
       </svg>
@@ -52,62 +61,94 @@ const experience = [
     role: "Software Engineer",
     period: "Aug 2024 — now",
     location: "Hyderabad, India",
-    description: "Building dsitributed systems for large-scale data processing and analytics. Working with Java, Springboot, Spark, Kubernetes and MongoDB.",
+    description:
+      "Building dsitributed systems for large-scale data processing and analytics. Working with Java, Springboot, Spark, Kubernetes and MongoDB.",
   },
   {
     company: "ShopOS",
     role: "AI Engineer Intern",
     period: "Jan 2024 — Jul 2024",
     location: "Remote",
-    description: "Shipped POCs around everything image gen. Worked with LLMs and diffusion models using python, flask and react.",
+    description:
+      "Shipped POCs around everything image gen. Worked with LLMs and diffusion models using python, flask and react.",
   },
 ];
 
 const skills = [
   { category: "Languages", items: ["Java", "Javascript", "Python"] },
-  { category: "Frameworks", items: ["Springboot", "React", "Next.js", "Node.js", "Flask"] },
+  {
+    category: "Frameworks",
+    items: ["Springboot", "React", "Next.js", "Node.js", "Flask"],
+  },
   { category: "Infra", items: ["Kubernetes", "Linux", "MongoDB"] },
 ];
+
+function SectionHeading({
+  eyebrow,
+  action,
+}: {
+  eyebrow: string;
+  action?: React.ReactNode;
+}) {
+  return (
+    <div className="mb-5 flex items-center justify-between gap-4">
+      <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-muted">
+        {eyebrow}
+      </h2>
+      {action}
+    </div>
+  );
+}
 
 export default function Home() {
   const recentPosts = getAllPosts().slice(0, 3);
 
   return (
-    <>
-      {/* ── Hero ── */}
-      <section className="relative min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center px-6 text-center">
-        <div className="animate-fade-up -mt-12" style={{ animationDelay: "0ms" }}>
-          <Image
-            src={profile_img}
-            alt="Divya Soni"
-            width={200}
-            height={200}
-            className="rounded-full mx-auto mb-6 border-2 border-line object-cover"
-            priority
-          />
-        </div>
-
-        <div className="animate-fade-up" style={{ animationDelay: "120ms" }}>
-          <h1 className="text-[2.4rem] sm:text-[3rem] font-bold tracking-[-0.03em] text-foreground leading-tight">
-            hey, i&apos;m divya<span className="text-primary">_</span>
-          </h1>
-        </div>
-
-        <div className="animate-fade-up" style={{ animationDelay: "240ms" }}>
-          <p className="text-[1rem] sm:text-[1.1rem] text-muted mt-5 leading-relaxed">
-            I build with distributed systems at work and tinker with AI in my free time. <br/>
-            I love building software that feels magical, and hate writing about myself in the third person.
-          </p>
-        </div>
-
-        <div className="animate-fade-up" style={{ animationDelay: "360ms" }}>
-          <p className="font-mono text-[0.8rem] sm:text-[0.9rem] text-muted/60 mt-3">
+    <main>
+      <section className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-[980px] items-center gap-10 px-5 py-16 sm:px-6 lg:grid-cols-[1fr_280px] lg:py-24">
+        <div className="animate-fade-up">
+          <p className="mb-5 text-sm font-medium uppercase tracking-[0.14em] text-primary">
             Software Engineer at Wells Fargo · Hyderabad, Telangana
           </p>
+          <h1 className="max-w-3xl text-[3rem] font-semibold leading-[0.98] tracking-normal text-foreground sm:text-[4.5rem]">
+            hey, i&apos;m divya.
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-muted">
+            I build with distributed systems at work and tinker with AI in my
+            free time. I love building software that feels magical, and hate
+            writing about myself in the third person.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link
+              href="/projects"
+              className="inline-flex h-11 items-center rounded-full bg-foreground px-5 text-sm font-medium text-background transition-opacity duration-150 hover:opacity-90"
+            >
+              View projects
+            </Link>
+            <Link
+              href="/blog"
+              className="inline-flex h-11 items-center rounded-full border border-line bg-surface px-5 text-sm font-medium text-foreground transition-colors duration-150 hover:border-primary/40 hover:text-primary"
+            >
+              Read writing
+            </Link>
+          </div>
         </div>
 
-        <div className="animate-fade-up" style={{ animationDelay: "480ms" }}>
-          <div className="flex items-center gap-4 mt-8">
+        <div
+          className="animate-fade-up justify-self-start lg:justify-self-end"
+          style={{ animationDelay: "120ms" }}
+        >
+          <div className="rounded-[8px] border border-line bg-surface p-3 shadow-[var(--shadow-soft)]">
+            <Image
+              src={profileImg}
+              alt="Divya Soni"
+              width={248}
+              height={248}
+              className="aspect-square rounded-[6px] object-cover"
+              priority
+            />
+          </div>
+          <div className="mt-4 flex items-center gap-2">
             {socials.map(({ label, href, icon }) => (
               <a
                 key={label}
@@ -115,175 +156,132 @@ export default function Home() {
                 target={href.startsWith("mailto") ? undefined : "_blank"}
                 rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
                 aria-label={label}
-                className="w-10 h-10 rounded-full border border-line flex items-center justify-center text-muted hover:text-primary hover:border-primary transition-all duration-200"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-muted transition-colors duration-150 hover:border-primary/40 hover:text-primary"
               >
                 {icon}
               </a>
             ))}
           </div>
         </div>
-
-        {/* <div className="animate-fade-up" style={{ animationDelay: "600ms" }}>
-          <div className="flex flex-col sm:flex-row items-center gap-3 mt-8">
-            <Link
-              href="/projects"
-              className="font-mono text-[13px] h-10 px-6 rounded-full border border-primary text-foreground flex items-center justify-center hover:bg-primary hover:text-background transition-all duration-200"
-            >
-              View Projects
-            </Link>
-            <Link
-              href="/blog"
-              className="font-mono text-[13px] h-10 px-6 rounded-full border border-line text-muted flex items-center justify-center hover:border-primary hover:text-primary transition-all duration-200"
-            >
-              Read Blog
-            </Link>
-          </div>
-        </div> */}
-
-        <div className="absolute bottom-9 left-1/2 -translate-x-1/2 animate-fade-up" style={{ animationDelay: "800ms" }}>
-          <a
-            href="#content"
-            aria-label="Scroll down"
-            className="flex flex-col items-center gap-2 text-muted/50 hover:text-primary transition-colors duration-200"
-          >
-            <span className="font-mono text-[15px]">scroll</span>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="animate-float"
-            >
-              <path d="M7 13l5 5 5-5" />
-              <path d="M7 6l5 5 5-5" />
-            </svg>
-          </a>
-        </div>
       </section>
 
-      <main id="content" className="max-w-[640px] mx-auto px-6 pb-24 scroll-mt-24">
-
-      {/* ── Stack ── */}
-      <FadeIn className="mb-16">
-        <h2 className="font-mono text-[13px] uppercase tracking-[0.08em] text-muted mb-5">
-          <span className="text-primary">//</span> Stack
-        </h2>
-        <div className="flex flex-col gap-3">
-          {skills.map(({ category, items }) => (
-            <div key={category} className="flex items-start gap-6">
-              <span className="font-mono text-[12px] text-muted w-20 pt-0.5 flex-shrink-0">
-                {category}
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {items.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+      <div className="mx-auto max-w-[780px] px-5 pb-24 sm:px-6">
+        <FadeIn className="mb-18">
+          <SectionHeading eyebrow="Stack" />
+          <div className="space-y-4 rounded-lg border border-line bg-surface p-5 shadow-[var(--shadow-soft)]">
+            {skills.map(({ category, items }) => (
+              <div
+                key={category}
+                className="grid gap-3 sm:grid-cols-[120px_1fr] sm:items-start"
+              >
+                <span className="text-sm font-medium text-foreground">
+                  {category}
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {items.map((tag) => (
+                    <Tag key={tag}>{tag}</Tag>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </FadeIn>
+            ))}
+          </div>
+        </FadeIn>
 
-      {/* ── Experience ── */}
-      <FadeIn className="mb-16">
-        <h2 className="font-mono text-[13px] uppercase tracking-[0.08em] text-muted mb-5">
-          <span className="text-primary">//</span> Experience
-        </h2>
-        <div className="border-b border-line">
-          {experience.map(({ company, role, period, location, description }) => (
-            <div
-              key={company}
-              className={`border-t border-line py-5 pl-4 border-l-2 ${
-                period.includes("now") ? "border-l-primary" : "border-l-line"
-              }`}
-            >
-              <div className="flex items-baseline justify-between gap-4 mb-1">
-                <span className="text-[15px] font-semibold text-foreground">{company}</span>
-                <span className="font-mono text-[12px] text-muted flex-shrink-0">{period}</span>
-              </div>
-              <div className="flex items-center gap-3 mb-2">
-                <p className="font-mono text-[12px] text-primary">{role}</p>
-                <span className="text-line">·</span>
-                <p className="font-mono text-[12px] text-muted">{location}</p>
-              </div>
-              <p className="text-[14px] text-muted leading-relaxed">{description}</p>
-            </div>
-          ))}
-        </div>
-      </FadeIn>
-
-      {/* ── Projects ── */}
-      <FadeIn className="mb-16">
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="font-mono text-[13px] uppercase tracking-[0.08em] text-muted">
-            <span className="text-primary">//</span> Projects
-          </h2>
-          <Link
-            href="/projects"
-            className="font-mono text-[13px] text-muted hover:text-primary transition-colors duration-100"
-          >
-            View all →
-          </Link>
-        </div>
-        <div className="flex flex-col gap-3">
-          {featuredProjects.map((p) => (
-            <Link
-              key={p.slug}
-              href={`/projects/${p.slug}`}
-              className="group border border-line p-4 transition-all duration-200 hover:border-primary hover:-translate-y-0.5 hover:shadow-sm"
-            >
-              <h3 className="text-[18px] font-semibold text-foreground mb-1.5 group-hover:text-primary transition-colors duration-150">
-                {p.title}
-              </h3>
-              <p className="text-[14px] text-muted mb-3 leading-relaxed">
-                {p.description}
-              </p>
-              <div className="flex gap-2 flex-wrap">
-                {p.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-              </div>
-            </Link>
-          ))}
-        </div>
-      </FadeIn>
-
-      {/* ── Writing ── */}
-      <FadeIn>
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="font-mono text-[13px] uppercase tracking-[0.08em] text-muted">
-            <span className="text-primary">//</span> Writing
-          </h2>
-          <Link
-            href="/blog"
-            className="font-mono text-[13px] text-muted hover:text-primary transition-colors duration-100"
-          >
-            View all →
-          </Link>
-        </div>
-        <div className="border-b border-line">
-          {recentPosts.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="group flex items-start justify-between gap-6 border-t border-line py-4 -mx-4 px-4 hover:bg-surface transition-colors duration-100"
-            >
-              <div>
-                <h3 className="text-[16px] font-medium text-foreground mb-1 group-hover:text-primary transition-colors duration-100">
-                  {post.title}
-                </h3>
-                <p className="text-[14px] text-muted leading-relaxed">
-                  {post.excerpt}
+        <FadeIn className="mb-18">
+          <SectionHeading eyebrow="Experience" />
+          <div className="divide-y divide-line rounded-lg border border-line bg-surface shadow-[var(--shadow-soft)]">
+            {experience.map(({ company, role, period, location, description }) => (
+              <article key={company} className="p-5">
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                  <h3 className="text-base font-semibold text-foreground">
+                    {company}
+                  </h3>
+                  <span className="text-sm text-muted">{period}</span>
+                </div>
+                <p className="mt-1 text-sm font-medium text-primary">
+                  {role} · {location}
                 </p>
-              </div>
-              <time className="font-mono text-[12px] text-muted flex-shrink-0 pt-1">
-                {post.date}
-              </time>
-            </Link>
-          ))}
-        </div>
-      </FadeIn>
+                <p className="mt-3 text-sm leading-6 text-muted">
+                  {description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </FadeIn>
+
+        <FadeIn className="mb-18">
+          <SectionHeading
+            eyebrow="Projects"
+            action={
+              <Link
+                href="/projects"
+                className="text-sm font-medium text-muted transition-colors duration-150 hover:text-primary"
+              >
+                View all →
+              </Link>
+            }
+          />
+          <div className="grid gap-3">
+            {featuredProjects.map((project) => (
+              <Link
+                key={project.slug}
+                href={`/projects/${project.slug}`}
+                className="group rounded-lg border border-line bg-surface p-5 shadow-[var(--shadow-soft)] transition-all duration-150 hover:-translate-y-0.5 hover:border-primary/40"
+              >
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <h3 className="text-xl font-semibold text-foreground transition-colors duration-150 group-hover:text-primary">
+                    {project.title}
+                  </h3>
+                  <span className="text-sm text-muted">{project.year}</span>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-muted">
+                  {project.description}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <Tag key={tag}>{tag}</Tag>
+                  ))}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </FadeIn>
+
+        <FadeIn>
+          <SectionHeading
+            eyebrow="Writing"
+            action={
+              <Link
+                href="/blog"
+                className="text-sm font-medium text-muted transition-colors duration-150 hover:text-primary"
+              >
+                View all →
+              </Link>
+            }
+          />
+          <div className="divide-y divide-line rounded-lg border border-line bg-surface shadow-[var(--shadow-soft)]">
+            {recentPosts.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="group grid gap-2 p-5 transition-colors duration-150 hover:bg-surface-soft sm:grid-cols-[1fr_110px]"
+              >
+                <div>
+                  <h3 className="text-base font-semibold text-foreground transition-colors duration-150 group-hover:text-primary">
+                    {post.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-muted">
+                    {post.excerpt}
+                  </p>
+                </div>
+                <time className="text-sm text-muted sm:text-right">
+                  {post.date}
+                </time>
+              </Link>
+            ))}
+          </div>
+        </FadeIn>
+      </div>
     </main>
-    </>
   );
 }

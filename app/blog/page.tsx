@@ -7,15 +7,16 @@ export const metadata = {
 
 export default function BlogPage() {
   const posts = getAllPosts();
+
   return (
-    <main className="max-w-[640px] mx-auto px-6 py-24">
+    <main className="mx-auto max-w-[780px] px-5 py-20 sm:px-6 sm:py-24">
       <div className="mb-10">
-        <h1 className="text-4xl font-semibold tracking-[-0.02em] text-foreground mb-2">
+        <p className="mb-3 text-sm font-medium uppercase tracking-[0.14em] text-primary">
           Writing
-        </h1>
-        <p className="text-[15px] text-muted">
-          Technical articles, tutorials, and notes on systems engineering.
         </p>
+        <h1 className="text-4xl font-semibold tracking-normal text-foreground sm:text-5xl">
+          Technical articles, tutorials, and notes on systems engineering.
+        </h1>
       </div>
       <BlogList posts={posts} />
     </main>
