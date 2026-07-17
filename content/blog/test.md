@@ -18,7 +18,7 @@ But textbooks are not just text. They are diagrams, equations, tables, and dense
 
 The breakthrough was simple. For this use case, the AI did not need a perfect parse. It just needed to see what the student was seeing. So instead of extracting text, Mira sends a screenshot of the exact page the student is reading. Modern vision-capable models can interpret diagrams, formulas, and tables directly from the image, and across many textbook pages the explanations were consistently accurate enough for studying.
 
-This also came with an unexpected optimization. Parsing a page and sending both text and images can be token-heavy, but sending a single page image costs roughly ~250 input tokens. The vision-first approach was simpler and significantly cheaper.
+This also came with an unexpected optimization. Parsing a page and sending both text and images can be token-heavy, but sending a single page image costs roughly ~250 input tokens. The vision-first approach was simpler and significantly cheaper.
 
 ## The Interface: A Textbook With a Built-In Tutor
 

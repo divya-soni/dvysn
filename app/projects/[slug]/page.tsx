@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CodeBlock from "../../components/CodeBlock";
+import MetadataList from "../../components/MetadataList";
+import ProjectMotif from "../../components/ProjectMotif";
 import Tag from "../../components/Tag";
 import { getProject, projects } from "../../data/projects";
 
@@ -8,111 +10,103 @@ export async function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export async function generateMetadata({ params }: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
   const project = getProject(slug);
-
   return {
-    title: project ? `${project.title} — Divya Soni` : "Not Found",
+    title: project?.title ?? "Not Found",
+    description: project?.description,
   };
 }
 
-export default async function ProjectDetail({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ProjectDetail({ params }: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
 
   const { writeup, snippet } = project;
+  const projectIndex = projects.findIndex((item) => item.slug === slug);
+  const nextProject = projects[(projectIndex + 1) % projects.length];
 
   return (
-    <main className="mx-auto max-w-[780px] px-5 py-16 sm:px-6 sm:py-20">
-      <Link
-        href="/projects"
-        className="mb-10 inline-flex items-center text-sm font-medium text-muted transition-colors duration-150 hover:text-primary"
-      >
-        ← Projects
-      </Link>
+    <main id="main-content" className="project-detail">
+      <div className="shell project-detail__top">
+        <Link href="/projects" className="back-link"><span aria-hidden="true">←</span> Project archive</Link>
+        <span className="project-detail__index">Project {String(projectIndex + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</span>
+      </div>
 
-      <header className="mb-10">
-        <p className="mb-3 text-sm font-medium uppercase tracking-[0.14em] text-primary">
-          {project.role}
-        </p>
-        <h1 className="text-4xl font-semibold leading-tight tracking-normal text-foreground sm:text-5xl">
-          {project.title}
-        </h1>
-        <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
-          <span>{project.year}</span>
-          <span>{project.language}</span>
-          <span>{project.stars} stars</span>
+      <header className="shell project-hero">
+        <div className="project-hero__copy">
+          <p className="eyebrow">{project.role} / {project.year}</p>
+          <h1 className="display">{project.title}</h1>
+          <p>{project.description}</p>
+          <div className="project-actions">
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className="button button--primary">
+                View source <span aria-hidden="true">↗</span>
+              </a>
+            )}
+            {project.demo && (
+              <a href={project.demo} target="_blank" rel="noopener noreferrer" className="button button--outline">
+                Live demo <span aria-hidden="true">↗</span>
+              </a>
+            )}
+          </div>
         </div>
-        <p className="mt-6 text-lg leading-8 text-muted">{project.description}</p>
-        <div className="mt-7 flex flex-wrap gap-3">
-          {project.github && (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-10 items-center rounded-full bg-foreground px-4 text-sm font-medium text-background transition-opacity duration-150 hover:opacity-90"
-            >
-              View Source →
-            </a>
-          )}
-          {project.demo && (
-            <a
-              href={project.demo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-10 items-center rounded-full border border-line bg-surface px-4 text-sm font-medium text-foreground transition-colors duration-150 hover:border-primary/40 hover:text-primary"
-            >
-              Live Demo →
-            </a>
-          )}
-        </div>
+        <ProjectMotif slug={project.slug} year={project.year} tags={project.tags} className="project-hero__motif" />
       </header>
 
-      <article className="prose">
-        <h2>Overview</h2>
-        <p>{project.description}</p>
+      <div className="shell project-story">
+        <aside className="project-story__aside">
+          <p className="eyebrow">Project record</p>
+          <MetadataList items={[
+            { label: "Year", value: project.year },
+            { label: "Role", value: project.role },
+            { label: "Language", value: project.language },
+            { label: "Stars", value: project.stars },
+          ]} />
+          <div className="tag-list project-story__tags">
+            {project.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+          </div>
+        </aside>
 
-        {writeup?.architecture && (
-          <>
-            <h2>Architecture</h2>
-            <p>{writeup.architecture}</p>
-          </>
-        )}
+        <article className="project-narrative prose">
+          <section>
+            <p className="section-kicker">01 / Overview</p>
+            <h2>Overview</h2>
+            <p>{project.description}</p>
+          </section>
+          {writeup?.architecture && (
+            <section>
+              <p className="section-kicker">02 / Architecture</p>
+              <h2>Architecture</h2>
+              <p>{writeup.architecture}</p>
+            </section>
+          )}
+          {writeup?.quote && <blockquote>{writeup.quote}</blockquote>}
+          {writeup?.implementation && (
+            <section>
+              <p className="section-kicker">03 / Implementation</p>
+              <h2>Implementation</h2>
+              <p>{writeup.implementation}</p>
+              {snippet && <CodeBlock code={snippet.code} language={snippet.language} />}
+            </section>
+          )}
+          {writeup?.results && (
+            <section>
+              <p className="section-kicker">04 / Results</p>
+              <h2>Results</h2>
+              <p>{writeup.results}</p>
+            </section>
+          )}
+        </article>
+      </div>
 
-        {writeup?.quote && <blockquote>{writeup.quote}</blockquote>}
-
-        {writeup?.implementation && (
-          <>
-            <h2>Implementation</h2>
-            <p>{writeup.implementation}</p>
-          </>
-        )}
-
-        {snippet && <CodeBlock code={snippet.code} language={snippet.language} />}
-
-        {writeup?.results && (
-          <>
-            <h2>Results</h2>
-            <p>{writeup.results}</p>
-          </>
-        )}
-
-        <div className="mt-8 flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
-            <Tag key={tag}>{tag}</Tag>
-          ))}
-        </div>
-      </article>
+      <Link href={`/projects/${nextProject.slug}`} className="next-project">
+        <span>Next project</span>
+        <strong className="display">{nextProject.title}</strong>
+        <span className="next-project__arrow" aria-hidden="true">↗</span>
+      </Link>
     </main>
   );
 }

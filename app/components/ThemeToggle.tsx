@@ -48,7 +48,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-muted shadow-[var(--shadow-soft)] transition-colors duration-150 hover:border-primary/40 hover:text-foreground"
+    className="theme-toggle"
     >
       <span key={dark ? "dark" : "light"} className="theme-icon block">
         <Icon>
