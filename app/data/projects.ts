@@ -23,6 +23,7 @@ export interface Project {
   stars: number;
   github: string | null;
   demo: string | null;
+  live?: string | null;
   featured: boolean;
   writeup?: ProjectWriteup;
   snippet?: ProjectSnippet;

@@ -41,14 +41,19 @@ export default async function ProjectDetail({ params }: PageProps<"/projects/[sl
           <h1 className="display">{project.title}</h1>
           <p>{project.description}</p>
           <div className="project-actions">
+            {project.live && (
+              <a href={project.live} target="_blank" rel="noopener noreferrer" className="button button--primary">
+                Open project <span aria-hidden="true">↗</span>
+              </a>
+            )}
             {project.github && (
-              <a href={project.github} target="_blank" rel="noopener noreferrer" className="button button--primary">
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className={project.live ? "button button--outline" : "button button--primary"}>
                 View source <span aria-hidden="true">↗</span>
               </a>
             )}
             {project.demo && (
               <a href={project.demo} target="_blank" rel="noopener noreferrer" className="button button--outline">
-                Live demo <span aria-hidden="true">↗</span>
+                Watch demo <span aria-hidden="true">↗</span>
               </a>
             )}
           </div>

@@ -35,6 +35,7 @@ export default function ProjectRow({
             {project.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
           </div>
           <div className="availability" aria-label="Available project links">
+            {project.live && <span>Live</span>}
             {project.github && <span>Source</span>}
             {project.demo && <span>Demo</span>}
           </div>

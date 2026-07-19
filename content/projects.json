@@ -1,5 +1,24 @@
 [
 {
+  "slug": "prompt-versioning",
+  "title": "Prompt Versioning",
+  "description": "A production-ready dashboard and REST API for managing immutable prompt versions, comparing changes, and deploying or rolling back prompts by moving aliases.",
+  "tags": ["Next.js", "TypeScript", "Supabase", "REST API", "Prompt Management"],
+  "year": "2026",
+  "role": "Author",
+  "language": "TypeScript",
+  "stars": 0,
+  "github": "https://github.com/divya-soni/prompt-versioning",
+  "demo": "https://x.com/thedivyasoni/status/2078325391991935326?s=20",
+  "live": "https://prompt-versioning.dvysn.com/",
+  "featured": false,
+  "writeup": {
+    "architecture": "The system treats prompts like deployable software artifacts. Every saved revision becomes an immutable, gaplessly numbered version in PostgreSQL, while mutable aliases such as production and staging point to whichever version an application should resolve at runtime. A Next.js dashboard and API share the same service layer, Supabase Auth protects human workflows, and scoped API keys authenticate application requests. Database RPC functions keep version creation, alias movement, ownership checks, and audit logging atomic.",
+    "implementation": "Built with Next.js, TypeScript, React Server Components, Supabase, Zod, and shadcn/ui. The dashboard supports prompt creation, version history, model configuration, variables, side-by-side diffs, API-key management, and one-click promotion or rollback. The REST API exposes prompt, version, alias, diff, and resolution endpoints with consistent error envelopes, validation at every boundary, ETags and private caching for polling, optional Upstash rate limiting, structured request logs, and a nightly cleanup job for soft-deleted prompts.",
+    "results": "The finished service provides a practical workflow for changing prompts without coupling them to application deployments. Teams can inspect history, compare revisions, promote a tested version through an alias, and immediately roll back to a known-good version without editing content or redeploying code. Unit, API integration, and Playwright tests cover the core lifecycle, authorization boundaries, immutability guarantees, concurrent version numbering, alias moves, and resolution behavior."
+  }
+},
+{
   "slug": "memgpt-prototype",
   "title": "MemGPT Prototype",
   "description": "A Node.js CLI agent inspired by the MemGPT paper that experiments with working memory, recall storage, eviction, and summarized context for long-running conversations.",
