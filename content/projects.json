@@ -2,7 +2,7 @@
 {
   "slug": "prompt-versioning",
   "title": "Prompt Versioning",
-  "description": "A production-ready dashboard and REST API for managing immutable prompt versions, comparing changes, and deploying or rolling back prompts by moving aliases.",
+  "description": "Treat prompts like deployable software.",
   "tags": ["Next.js", "TypeScript", "Supabase", "REST API", "Prompt Management"],
   "year": "2026",
   "role": "Author",
@@ -21,7 +21,7 @@
 {
   "slug": "memgpt-prototype",
   "title": "MemGPT Prototype",
-  "description": "A Node.js CLI agent inspired by the MemGPT paper that experiments with working memory, recall storage, eviction, and summarized context for long-running conversations.",
+  "description": "Working memory for a long conversation.",
   "tags": ["Node.js", "LLMs", "PostgreSQL", "pgvector", "Agent Systems"],
   "year": "2026",
   "role": "Author",
@@ -39,7 +39,7 @@
 {
   "slug": "tool-calling",
   "title": "Tool Calling CLI",
-  "description": "A small Node.js experiment that makes tool calling visible: the model returns fixed command tokens, the CLI parses them, asks for confirmation, and executes CRUD-style directory actions locally.",
+  "description": "Make the model take an action, then watch it happen.",
   "tags": ["Node.js", "LLMs", "Tool Calling", "CLI", "Agent Systems"],
   "year": "2026",
   "role": "Author",
@@ -57,7 +57,7 @@
 {
   "slug": "mira",
   "title": "Mira",
-  "description": "A vision-first AI reading assistant that acts like a \"Cursor for textbooks\"—understands pages in real time and provides contextual explanations with minimal friction.",
+  "description": "A cursor for textbooks.",
   "tags": ["LLMs", "TypeScript", "ReactJS", "NodeJS", "MongoDB"],
   "year": "2025",
   "role": "Author",
@@ -75,8 +75,8 @@
 
 {
   "slug": "png-to-psd",
-  "title": "A png-to-psd Converter",
-  "description": "Pipeline that converts flat images into layered PSDs using segmentation masks from Meta’s Segment Anything Model and scripted GIMP integration.",
+  "title": "PNG to PSD",
+  "description": "One image in, a layered file out.",
   "tags": ["Python", "Schema", "React", "GIMP", "SAM"],
   "year": "2024",
   "role": "Author",
@@ -94,7 +94,7 @@
 {
   "slug": "clive",
   "title": "Clive",
-  "description": "React-based web app for analyzing and discussing YouTube videos through an interactive, chat-like interface with optional spoiler control.",
+  "description": "Talk through a YouTube video without the spoilers.",
   "tags": ["React", "LLMs", "Frontend", "Vite", "TailwindCSS"],
   "year": "2025",
   "role": "Author",
@@ -111,8 +111,8 @@
 },
 {                                                    
     "slug": "tally-expense-tracker",                                                                                                                  
-    "title": "Tally — Telegram Expense Tracker",                                                                                                      
-    "description": "Telegram bot that logs expenses from natural-language text or voice notes, parses them with an LLM, and writes structured rows to Google Sheets.",                                                                                                                                    
+    "title": "Tally",
+    "description": "Text or voice in, a row in the sheet.",                                                                                                                                    
     "tags": ["Python", "Telegram", "LLM", "Google Sheets", "Replicate"],
     "year": "2026",
     "role": "Author",

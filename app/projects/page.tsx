@@ -1,19 +1,22 @@
-import { PageHeader } from "../components/PageHeader";
-import ProjectsGrid from "../components/ProjectsGrid";
+import Link from "next/link";
 import { projects } from "../data/projects";
 
-export const metadata = { title: "Projects" };
+export const metadata = { title: "Work" };
 
 export default function ProjectsPage() {
   return (
-    <main id="main-content" className="page-shell shell">
-      <PageHeader
-        eyebrow={`Project archive / ${String(projects.length).padStart(2, "0")}`}
-        title={<>A few things I&apos;ve built <em>recently.</em></>}
-        description="More fun stuff coming soon!"
-        aside={<p>Systems, agents,<br />and useful experiments.</p>}
-      />
-      <ProjectsGrid projects={projects} />
+    <main id="main-content" className="page shell">
+      <h1 className="page-title">Work</h1>
+      <ul className="work-list">
+        {projects.map((project) => (
+          <li key={project.slug} className="work-item">
+            <h2 className="work-item-title">
+              <Link href={`/projects/${project.slug}`}>{project.title}</Link>
+            </h2>
+            <span className="index-meta">{project.year}</span>
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }

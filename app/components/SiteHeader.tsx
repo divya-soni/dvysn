@@ -5,21 +5,22 @@ import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 
 const routes = [
-  { href: "/projects", label: "Projects" },
-  { href: "/blog", label: "Writing" },
+  { href: "/projects", label: "Work" },
+  { href: "/blog", label: "Notes" },
 ];
 
 export default function SiteHeader() {
   const pathname = usePathname();
+  const home = pathname === "/";
 
   return (
     <header className="site-header">
-      <div className="shell site-header__inner">
-        <Link href="/" className="brand" aria-label="Divya Soni, home">
-          <span className="brand__mark">dvysn</span>
-          <span className="brand__divider" aria-hidden="true" />
-          <span className="brand__name">Divya Soni</span>
-        </Link>
+      <div className={`shell header-inner${home ? " header-inner-end" : ""}`}>
+        {!home && (
+          <Link href="/" className="brand">
+            Divya Soni
+          </Link>
+        )}
 
         <nav className="primary-nav" aria-label="Primary navigation">
           {routes.map(({ href, label }) => {
@@ -35,18 +36,6 @@ export default function SiteHeader() {
               </Link>
             );
           })}
-          <a
-            href="https://github.com/divya-soni"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="nav-link nav-link--external"
-          >
-            GitHub
-          </a>
-          <a className="header-contact" href="mailto:divya.rajeshsoni@gmail.com">
-            Let&apos;s talk
-            <span aria-hidden="true">↗</span>
-          </a>
           <ThemeToggle />
         </nav>
       </div>
