@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { marked } from "marked";
 import { getAllPosts, getPost } from "@/lib/blog";
+import { formatDate } from "@/lib/date";
 import MarkdownContent from "../../components/MarkdownContent";
 
 export async function generateStaticParams() {
@@ -11,16 +12,6 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">) {
   const { slug } = await params;
   const post = getPost(slug);
   return { title: post?.title ?? "Not Found", description: post?.excerpt };
-}
-
-function formatDate(iso: string) {
-  const date = new Date(`${iso}T00:00:00`);
-  if (Number.isNaN(date.getTime())) return iso;
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 }
 
 export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {

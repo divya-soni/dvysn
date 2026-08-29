@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { projects } from "../data/projects";
+import { formatDate } from "@/lib/date";
 
 export const metadata = { title: "Work" };
 
@@ -13,7 +14,9 @@ export default function ProjectsPage() {
             <h2 className="work-item-title">
               <Link href={`/projects/${project.slug}`}>{project.title}</Link>
             </h2>
-            <span className="index-meta">{project.year}</span>
+            <time className="index-meta" dateTime={project.date}>
+              {formatDate(project.date)}
+            </time>
           </li>
         ))}
       </ul>

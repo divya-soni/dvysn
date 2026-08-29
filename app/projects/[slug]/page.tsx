@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CodeBlock from "../../components/CodeBlock";
+import WorkLinks from "../../components/WorkLinks";
 import { getProject, projects } from "../../data/projects";
+import { formatDate } from "@/lib/date";
 
 export async function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -24,32 +26,15 @@ export default async function ProjectDetail({ params }: PageProps<"/projects/[sl
   const { writeup, snippet } = project;
   const projectIndex = projects.findIndex((item) => item.slug === slug);
   const nextProject = projects[(projectIndex + 1) % projects.length];
-  const hasLinks = Boolean(project.github || project.live || project.demo);
 
   return (
     <main id="main-content" className="page shell">
       <article className="work">
         <h1>{project.title}</h1>
-        <p className="work-kicker">{project.year}</p>
-        {hasLinks && (
-          <div className="work-links">
-            {project.github && (
-              <a href={project.github} target="_blank" rel="noopener noreferrer">
-                Source
-              </a>
-            )}
-            {project.live && (
-              <a href={project.live} target="_blank" rel="noopener noreferrer">
-                Live
-              </a>
-            )}
-            {project.demo && (
-              <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                Demo
-              </a>
-            )}
-          </div>
-        )}
+        <time className="work-kicker" dateTime={project.date}>
+          {formatDate(project.date)}
+        </time>
+        <WorkLinks project={project} />
 
         <div className="prose">
           <p>{project.description}</p>

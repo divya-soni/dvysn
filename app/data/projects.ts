@@ -17,6 +17,7 @@ export interface Project {
   title: string;
   description: string;
   tags: string[];
+  date: string;
   year: string;
   role: string;
   language: string;
@@ -29,11 +30,10 @@ export interface Project {
   snippet?: ProjectSnippet;
 }
 
-export const projects = projectsData as Project[];
+export const projects = [...(projectsData as Project[])].sort((a, b) =>
+  b.date.localeCompare(a.date),
+);
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
-
-export const featuredProjects = projects.filter((p) => p.featured);
- 

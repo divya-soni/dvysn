@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
+import { formatDate } from "@/lib/date";
 
 export const metadata = { title: "Notes" };
 
@@ -16,7 +17,7 @@ export default function BlogPage() {
               <Link href={`/blog/${post.slug}`}>{post.title}</Link>
             </h2>
             <time className="index-meta" dateTime={post.date}>
-              {post.date.slice(0, 4)}
+              {formatDate(post.date)}
             </time>
           </li>
         ))}

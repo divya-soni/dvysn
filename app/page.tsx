@@ -2,10 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import profileImg from "../public/avatar.jpeg";
 import { getAllPosts } from "@/lib/blog";
-import { featuredProjects } from "./data/projects";
+import { formatDate } from "@/lib/date";
+import { projects } from "./data/projects";
+
+const HIGHLIGHTS = 2;
 
 export default function Home() {
-  const recentPosts = getAllPosts().slice(0, 3);
+  const recentWork = projects.slice(0, HIGHLIGHTS);
+  const recentNotes = getAllPosts().slice(0, HIGHLIGHTS);
 
   return (
     <main id="main-content" className="home shell">
@@ -30,26 +34,36 @@ export default function Home() {
       <div className="home-indexes">
         <section className="index">
           <h2 className="index-heading">Work</h2>
-          {featuredProjects.map((project) => (
+          {recentWork.map((project) => (
             <div key={project.slug} className="index-item">
               <Link href={`/projects/${project.slug}`} className="index-title">
                 {project.title}
               </Link>
-              <span className="index-meta">{project.year}</span>
+              <time className="index-meta" dateTime={project.date}>
+                {formatDate(project.date)}
+              </time>
             </div>
           ))}
+          <p className="index-more">
+            <Link href="/projects">See more</Link>
+          </p>
         </section>
 
         <section className="index">
           <h2 className="index-heading">Notes</h2>
-          {recentPosts.map((post) => (
+          {recentNotes.map((post) => (
             <div key={post.slug} className="index-item">
               <Link href={`/blog/${post.slug}`} className="index-title">
                 {post.title}
               </Link>
-              <span className="index-meta">{post.date.slice(0, 4)}</span>
+              <time className="index-meta" dateTime={post.date}>
+                {formatDate(post.date)}
+              </time>
             </div>
           ))}
+          <p className="index-more">
+            <Link href="/blog">See more</Link>
+          </p>
         </section>
       </div>
     </main>

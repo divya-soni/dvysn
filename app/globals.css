@@ -155,6 +155,7 @@
   .page-title,
   .index-heading,
   .index-meta,
+  .index-more,
   .work-kicker,
   .article-date,
   .work-links,
@@ -349,11 +350,31 @@
     margin: 0.65rem 0 0;
   }
 
+  .index-more {
+    margin: 0.85rem 0 0;
+  }
+
+  .work-kicker {
+    display: block;
+  }
+
   .work-links {
     display: flex;
     flex-wrap: wrap;
     gap: 0.65rem 1.15rem;
     margin-top: 1.1rem;
+  }
+
+  .work-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+  }
+
+  .work-link svg {
+    width: 0.95em;
+    height: 0.95em;
+    flex-shrink: 0;
   }
 
   .work-next {
