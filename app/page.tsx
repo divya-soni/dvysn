@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import NoteLink from "./components/NoteLink";
 import profileImg from "../public/avatar.jpeg";
 import { getAllPosts } from "@/lib/blog";
 import { formatDate } from "@/lib/date";
@@ -53,9 +54,7 @@ export default function Home() {
           <h2 className="index-heading">Notes</h2>
           {recentNotes.map((post) => (
             <div key={post.slug} className="index-item">
-              <Link href={`/blog/${post.slug}`} className="index-title">
-                {post.title}
-              </Link>
+              <NoteLink post={post} className="index-title" />
               <time className="index-meta" dateTime={post.date}>
                 {formatDate(post.date)}
               </time>

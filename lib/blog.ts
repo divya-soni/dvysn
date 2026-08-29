@@ -9,6 +9,7 @@ export interface Post {
   readTime: string;
   excerpt: string;
   content: string;
+  href?: string;
 }
 
 const BLOG_DIR = path.join(process.cwd(), 'content/blog');
@@ -25,6 +26,7 @@ export function getAllPosts(): Post[] {
       const { data, content } = matter(raw);
       const wordCount = content.trim().split(/\s+/).length;
       const readTime = `${Math.ceil(wordCount / 200)} min read`;
+      const href = data.href ? String(data.href) : undefined;
       return {
         slug,
         title: String(data.title),
@@ -35,11 +37,12 @@ export function getAllPosts(): Post[] {
         readTime,
         excerpt: String(data.excerpt ?? ''),
         content,
+        href,
       };
     })
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 export function getPost(slug: string): Post | undefined {
-  return getAllPosts().find((p) => p.slug === slug);
+  return getAllPosts().find((p) => p.slug === slug && !p.href);
 }

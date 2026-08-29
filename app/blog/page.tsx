@@ -1,4 +1,4 @@
-import Link from "next/link";
+import NoteLink from "../components/NoteLink";
 import { getAllPosts } from "@/lib/blog";
 import { formatDate } from "@/lib/date";
 
@@ -14,7 +14,7 @@ export default function BlogPage() {
         {posts.map((post) => (
           <li key={post.slug} className="note-item">
             <h2 className="note-item-title">
-              <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+              <NoteLink post={post} />
             </h2>
             <time className="index-meta" dateTime={post.date}>
               {formatDate(post.date)}

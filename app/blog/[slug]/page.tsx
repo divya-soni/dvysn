@@ -5,7 +5,9 @@ import { formatDate } from "@/lib/date";
 import MarkdownContent from "../../components/MarkdownContent";
 
 export async function generateStaticParams() {
-  return getAllPosts().map((post) => ({ slug: post.slug }));
+  return getAllPosts()
+    .filter((post) => !post.href)
+    .map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/blog/[slug]">) {
