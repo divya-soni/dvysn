@@ -1,139 +1,143 @@
 [
-{
-  "slug": "prompt-versioning",
-  "title": "Prompt Versioning",
-  "description": "Treat prompts like deployable software.",
-  "tags": ["Next.js", "TypeScript", "Supabase", "REST API", "Prompt Management"],
-  "date": "2026-07-18",
-  "year": "2026",
-  "role": "Author",
-  "language": "TypeScript",
-  "stars": 0,
-  "github": "https://github.com/divya-soni/prompt-versioning",
-  "demo": "https://x.com/thedivyasoni/status/2078325391991935326?s=20",
-  "live": "https://prompt-versioning.dvysn.com/",
-  "featured": false,
-  "writeup": {
-    "architecture": "The system treats prompts like deployable software artifacts. Every saved revision becomes an immutable, gaplessly numbered version in PostgreSQL, while mutable aliases such as production and staging point to whichever version an application should resolve at runtime. A Next.js dashboard and API share the same service layer, Supabase Auth protects human workflows, and scoped API keys authenticate application requests. Database RPC functions keep version creation, alias movement, ownership checks, and audit logging atomic.",
-    "implementation": "Built with Next.js, TypeScript, React Server Components, Supabase, Zod, and shadcn/ui. The dashboard supports prompt creation, version history, model configuration, variables, side-by-side diffs, API-key management, and one-click promotion or rollback. The REST API exposes prompt, version, alias, diff, and resolution endpoints with consistent error envelopes, validation at every boundary, ETags and private caching for polling, optional Upstash rate limiting, structured request logs, and a nightly cleanup job for soft-deleted prompts.",
-    "results": "The finished service provides a practical workflow for changing prompts without coupling them to application deployments. Teams can inspect history, compare revisions, promote a tested version through an alias, and immediately roll back to a known-good version without editing content or redeploying code. Unit, API integration, and Playwright tests cover the core lifecycle, authorization boundaries, immutability guarantees, concurrent version numbering, alias moves, and resolution behavior."
-  }
-},
-{
-  "slug": "memgpt-prototype",
-  "title": "MemGPT Prototype",
-  "description": "Working memory for a long conversation.",
-  "tags": ["Node.js", "LLMs", "PostgreSQL", "pgvector", "Agent Systems"],
-  "date": "2026-05-04",
-  "year": "2026",
-  "role": "Author",
-  "language": "JavaScript",
-  "stars": 0,
-  "github": "https://github.com/divya-soni/memgpt-prototype",
-  "demo": null,
-  "featured": false,
-  "writeup": {
-    "architecture": "This prototype was built to make the MemGPT idea concrete: instead of treating the context window as a fixed hard limit, the agent manages an active working set and moves older information into external memory. Recent conversation lives in a FIFO queue, full messages are persisted in PostgreSQL, and older context can be recalled later through keyword search and summary-based memory. The overall design mirrors operating-system ideas like virtual memory, where the model gets the illusion of a much larger memory space than what fits in the prompt at once.",
-    "implementation": "The system is a terminal-based Node.js agent built with OpenRouter, the OpenAI SDK, PostgreSQL, pgvector, and dotenv. A queue manager sits between the user, the model, active context, recall storage, and memory updates. When memory pressure rises, older context is evicted, summarized recursively, and stored so the active context stays small but useful. The agent also supports heartbeat-style continuation after tool-like model responses, along with detailed logging around eviction, recall search, working-memory updates, and LLM/database timings to make behavior easier to inspect while testing.",
-    "results": "The project turned a research paper into something operational that could be run, stressed, and reasoned about. Building it made the tradeoffs of long-running agents much easier to understand, especially why explicit memory management matters more than simply stuffing more tokens into the prompt. The queue manager ended up being the most interesting part because it coordinates what stays active, what gets compressed, what is searchable later, and how the model regains access to prior context."
-  }
-},
-{
-  "slug": "tool-calling",
-  "title": "Tool Calling CLI",
-  "description": "Make the model take an action, then watch it happen.",
-  "tags": ["Node.js", "LLMs", "Tool Calling", "CLI", "Agent Systems"],
-  "date": "2026-04-27",
-  "year": "2026",
-  "role": "Author",
-  "language": "JavaScript",
-  "stars": 0,
-  "github": "https://github.com/divya-soni/tool-calling",
-  "demo": "https://www.linkedin.com/posts/divya-soni14_how-tool-calling-works-in-systems-like-claude-activity-7454595502756638720-E1qD?utm_source=share&utm_medium=member_desktop&rcm=ACoAAB6V9FkBygg0fGvsWwaC9kXINUoaUli3dXM",
-  "featured": true,
-  "writeup": {
-    "architecture": "This project is a stripped-down tool-calling loop built to make the mechanics obvious. A user types into a CLI, the request is sent to an LLM, and the model is instructed through the system prompt to either answer normally or emit a hard-coded command token. The surrounding application then interprets that token and maps it to a real local action such as clearing the screen, listing files, creating a directory, renaming it, or deleting it.",
-    "implementation": "The interesting part is not the CRUD operations themselves, but the protocol around them. Each tool is described to the model with an exact output format, so the model learns to respond with tokens that the script can parse deterministically. Once a command token is detected, the app extracts the arguments, routes execution through a switch-style handler, and runs the matching local command. In the demo, the loop also keeps enough conversational history for follow-up requests like 'rename it' or 'delete the directory' to resolve correctly from context.",
-    "results": "The prototype turned tool calling from a black box into something inspectable. It shows that the model itself is only producing text, while the real capability comes from application code that validates, parses, and executes that text against system tools. Even with a tiny command set, the demo makes the jump from chatbot to agent feel concrete and points toward obvious extensions like file editing, process inspection, and richer safety checks."
-  }
-},
-{
-  "slug": "mira",
-  "title": "Mira",
-  "description": "A cursor for textbooks.",
-  "tags": ["LLMs", "TypeScript", "ReactJS", "NodeJS", "MongoDB"],
-  "date": "2025-11-01",
-  "year": "2025",
-  "role": "Author",
-  "language": "TypeScript",
-  "stars": 1,
-  "github": "https://github.com",
-  "demo": null,
-  "featured": true,
-  "writeup": {
-    "architecture": "Instead of traditional RAG pipelines, Mira uses a vision-first approach by sending page screenshots directly to a multimodal LLM. Each PDF page maintains its own isolated conversation context, effectively creating per-page memory threads. The system routes queries either to page-level reasoning (via screenshots) or document-level reasoning (by sending the full PDF) depending on user intent.",
-    "implementation": "Built as a PDF reader with an embedded chat interface. On each query, the app captures the current page as an image and sends it along with prior page-specific chat history. Responses are post-processed into smaller message chunks to mimic natural conversation. Optional text-to-speech is integrated via Kokoro (hosted on Replicate), converting LLM outputs into audio. The system also optimizes token usage by avoiding text extraction and relying solely on image inputs.",
-    "results": "Eliminated the need for complex PDF parsing while improving contextual understanding of diagrams, equations, and layouts. Reduced token usage (~250 tokens per page image) compared to text+image pipelines. Delivered a significantly smoother UX by removing friction from context switching and transforming long LLM outputs into conversational responses. Demonstrated that vision-based approaches can simplify architecture while maintaining strong accuracy for educational use cases."
-  }
-},
-
-{
-  "slug": "png-to-psd",
-  "title": "PNG to PSD",
-  "description": "One image in, a layered file out.",
-  "tags": ["Python", "Schema", "React", "GIMP", "SAM"],
-  "date": "2024-09-01",
-  "year": "2024",
-  "role": "Author",
-  "language": "Python",
-  "stars": 0,
-  "github": null,
-  "demo": null,
-  "featured": false,
-  "writeup": {
-    "architecture": "User uploads an image through a React frontend. The backend sends the image to SAM via Replicate to generate segmentation masks. Python processes these masks to reduce overlaps and extract layer candidates. The processed layers are then passed to a GIMP Script-Fu script, which assembles them into a PSD file and exports the result.",
-    "implementation": "Segmentation handled by SAM through Replicate API. Post-processing done in Python to clean and merge masks. GIMP scripting (Script-Fu in Scheme) used to programmatically construct layered images and export PSDs. Lightweight React UI for interaction.",
-    "results": "Produces PSD files with dozens of automatically generated layers from a single input image in ~1 minute. Demonstrates feasibility of automated image decomposition, but outputs are noisy, with overlapping and redundant layers requiring manual cleanup."
-  }
-},
-{
-  "slug": "clive",
-  "title": "Clive",
-  "description": "Talk through a YouTube video without the spoilers.",
-  "tags": ["React", "LLMs", "Frontend", "Vite", "TailwindCSS"],
-  "date": "2025-08-01",
-  "year": "2025",
-  "role": "Author",
-  "language": "TypeScript",
-  "stars": 0,
-  "github": null,
-  "demo": null,
-  "featured": false,
-  "writeup": {
-    "architecture": "Single-page React application where users input a YouTube URL and interact with the content through a conversational interface. Routing handled via React Router, with UI state managing modes like spoiler control and chat flow.",
-    "implementation": "Built using React with Vite for fast development and bundling. TailwindCSS used for styling and responsive layouts. ESLint configured with React Hooks and React Refresh plugins to maintain code quality and developer experience.",
-    "results": "Enables users to explore and discuss YouTube videos interactively, with a focus on usability and spoiler control. Provides a smooth experience across desktop and mobile devices."
-  }
-},
-{                                                    
-    "slug": "tally-expense-tracker",                                                                                                                  
+  {
+    "slug": "prompt-versioning",
+    "title": "Prompt Versioning",
+    "description": "Treat prompts like deployable software.",
+    "tags": [
+      "Next.js",
+      "TypeScript",
+      "Supabase",
+      "REST API",
+      "Prompt Management"
+    ],
+    "date": "2026-07-18",
+    "github": "https://github.com/divya-soni/prompt-versioning",
+    "demo": "https://x.com/thedivyasoni/status/2078325391991935326?s=20",
+    "live": "https://prompt-versioning.dvysn.com/",
+    "writeup": {
+      "architecture": "The system treats prompts like deployable software artifacts. Every saved revision becomes an immutable, gaplessly numbered version in PostgreSQL, while mutable aliases such as production and staging point to whichever version an application should resolve at runtime. A Next.js dashboard and API share the same service layer, Supabase Auth protects human workflows, and scoped API keys authenticate application requests. Database RPC functions keep version creation, alias movement, ownership checks, and audit logging atomic.",
+      "implementation": "Built with Next.js, TypeScript, React Server Components, Supabase, Zod, and shadcn/ui. The dashboard supports prompt creation, version history, model configuration, variables, side-by-side diffs, API-key management, and one-click promotion or rollback. The REST API exposes prompt, version, alias, diff, and resolution endpoints with consistent error envelopes, validation at every boundary, ETags and private caching for polling, optional Upstash rate limiting, structured request logs, and a nightly cleanup job for soft-deleted prompts.",
+      "results": "The finished service provides a practical workflow for changing prompts without coupling them to application deployments. Teams can inspect history, compare revisions, promote a tested version through an alias, and immediately roll back to a known-good version without editing content or redeploying code. Unit, API integration, and Playwright tests cover the core lifecycle, authorization boundaries, immutability guarantees, concurrent version numbering, alias moves, and resolution behavior."
+    }
+  },
+  {
+    "slug": "memgpt-prototype",
+    "title": "MemGPT Prototype",
+    "description": "Working memory for a long conversation.",
+    "tags": [
+      "Node.js",
+      "LLMs",
+      "PostgreSQL",
+      "pgvector",
+      "Agent Systems"
+    ],
+    "date": "2026-05-04",
+    "github": "https://github.com/divya-soni/memgpt-prototype",
+    "demo": null,
+    "writeup": {
+      "architecture": "This prototype was built to make the MemGPT idea concrete: instead of treating the context window as a fixed hard limit, the agent manages an active working set and moves older information into external memory. Recent conversation lives in a FIFO queue, full messages are persisted in PostgreSQL, and older context can be recalled later through keyword search and summary-based memory. The overall design mirrors operating-system ideas like virtual memory, where the model gets the illusion of a much larger memory space than what fits in the prompt at once.",
+      "implementation": "The system is a terminal-based Node.js agent built with OpenRouter, the OpenAI SDK, PostgreSQL, pgvector, and dotenv. A queue manager sits between the user, the model, active context, recall storage, and memory updates. When memory pressure rises, older context is evicted, summarized recursively, and stored so the active context stays small but useful. The agent also supports heartbeat-style continuation after tool-like model responses, along with detailed logging around eviction, recall search, working-memory updates, and LLM/database timings to make behavior easier to inspect while testing.",
+      "results": "The project turned a research paper into something operational that could be run, stressed, and reasoned about. Building it made the tradeoffs of long-running agents much easier to understand, especially why explicit memory management matters more than simply stuffing more tokens into the prompt. The queue manager ended up being the most interesting part because it coordinates what stays active, what gets compressed, what is searchable later, and how the model regains access to prior context."
+    }
+  },
+  {
+    "slug": "tool-calling",
+    "title": "Tool Calling CLI",
+    "description": "Make the model take an action, then watch it happen.",
+    "tags": [
+      "Node.js",
+      "LLMs",
+      "Tool Calling",
+      "CLI",
+      "Agent Systems"
+    ],
+    "date": "2026-04-27",
+    "github": "https://github.com/divya-soni/tool-calling",
+    "demo": "https://www.linkedin.com/posts/divya-soni14_how-tool-calling-works-in-systems-like-claude-activity-7454595502756638720-E1qD?utm_source=share&utm_medium=member_desktop&rcm=ACoAAB6V9FkBygg0fGvsWwaC9kXINUoaUli3dXM",
+    "writeup": {
+      "architecture": "This project is a stripped-down tool-calling loop built to make the mechanics obvious. A user types into a CLI, the request is sent to an LLM, and the model is instructed through the system prompt to either answer normally or emit a hard-coded command token. The surrounding application then interprets that token and maps it to a real local action such as clearing the screen, listing files, creating a directory, renaming it, or deleting it.",
+      "implementation": "The interesting part is not the CRUD operations themselves, but the protocol around them. Each tool is described to the model with an exact output format, so the model learns to respond with tokens that the script can parse deterministically. Once a command token is detected, the app extracts the arguments, routes execution through a switch-style handler, and runs the matching local command. In the demo, the loop also keeps enough conversational history for follow-up requests like 'rename it' or 'delete the directory' to resolve correctly from context.",
+      "results": "The prototype turned tool calling from a black box into something inspectable. It shows that the model itself is only producing text, while the real capability comes from application code that validates, parses, and executes that text against system tools. Even with a tiny command set, the demo makes the jump from chatbot to agent feel concrete and points toward obvious extensions like file editing, process inspection, and richer safety checks."
+    }
+  },
+  {
+    "slug": "mira",
+    "title": "Mira",
+    "description": "A cursor for textbooks.",
+    "tags": [
+      "LLMs",
+      "TypeScript",
+      "ReactJS",
+      "NodeJS",
+      "MongoDB"
+    ],
+    "date": "2025-11-01",
+    "github": null,
+    "demo": null,
+    "writeup": {
+      "architecture": "Instead of traditional RAG pipelines, Mira uses a vision-first approach by sending page screenshots directly to a multimodal LLM. Each PDF page maintains its own isolated conversation context, effectively creating per-page memory threads. The system routes queries either to page-level reasoning (via screenshots) or document-level reasoning (by sending the full PDF) depending on user intent.",
+      "implementation": "Built as a PDF reader with an embedded chat interface. On each query, the app captures the current page as an image and sends it along with prior page-specific chat history. Responses are post-processed into smaller message chunks to mimic natural conversation. Optional text-to-speech is integrated via Kokoro (hosted on Replicate), converting LLM outputs into audio. The system also optimizes token usage by avoiding text extraction and relying solely on image inputs.",
+      "results": "Eliminated the need for complex PDF parsing while improving contextual understanding of diagrams, equations, and layouts. Reduced token usage (~250 tokens per page image) compared to text+image pipelines. Delivered a significantly smoother UX by removing friction from context switching and transforming long LLM outputs into conversational responses. Demonstrated that vision-based approaches can simplify architecture while maintaining strong accuracy for educational use cases."
+    }
+  },
+  {
+    "slug": "png-to-psd",
+    "title": "PNG to PSD",
+    "description": "One image in, a layered file out.",
+    "tags": [
+      "Python",
+      "Schema",
+      "React",
+      "GIMP",
+      "SAM"
+    ],
+    "date": "2024-09-01",
+    "github": null,
+    "demo": null,
+    "writeup": {
+      "architecture": "User uploads an image through a React frontend. The backend sends the image to SAM via Replicate to generate segmentation masks. Python processes these masks to reduce overlaps and extract layer candidates. The processed layers are then passed to a GIMP Script-Fu script, which assembles them into a PSD file and exports the result.",
+      "implementation": "Segmentation handled by SAM through Replicate API. Post-processing done in Python to clean and merge masks. GIMP scripting (Script-Fu in Scheme) used to programmatically construct layered images and export PSDs. Lightweight React UI for interaction.",
+      "results": "Produces PSD files with dozens of automatically generated layers from a single input image in ~1 minute. Demonstrates feasibility of automated image decomposition, but outputs are noisy, with overlapping and redundant layers requiring manual cleanup."
+    }
+  },
+  {
+    "slug": "clive",
+    "title": "Clive",
+    "description": "Talk through a YouTube video without the spoilers.",
+    "tags": [
+      "React",
+      "LLMs",
+      "Frontend",
+      "Vite",
+      "TailwindCSS"
+    ],
+    "date": "2025-08-01",
+    "github": null,
+    "demo": null,
+    "writeup": {
+      "architecture": "Single-page React application where users input a YouTube URL and interact with the content through a conversational interface. Routing handled via React Router, with UI state managing modes like spoiler control and chat flow.",
+      "implementation": "Built using React with Vite for fast development and bundling. TailwindCSS used for styling and responsive layouts. ESLint configured with React Hooks and React Refresh plugins to maintain code quality and developer experience.",
+      "results": "Enables users to explore and discuss YouTube videos interactively, with a focus on usability and spoiler control. Provides a smooth experience across desktop and mobile devices."
+    }
+  },
+  {
+    "slug": "tally-expense-tracker",
     "title": "Tally",
-    "description": "Text or voice in, a row in the sheet.",                                                                                                                                    
-    "tags": ["Python", "Telegram", "LLM", "Google Sheets", "Replicate"],
+    "description": "Text or voice in, a row in the sheet.",
+    "tags": [
+      "Python",
+      "Telegram",
+      "LLM",
+      "Google Sheets",
+      "Replicate"
+    ],
     "date": "2026-04-14",
-    "year": "2026",
-    "role": "Author",
-    "language": "Python",
-    "stars": 0,
     "github": "https://github.com/divya-soni/expense-tracking-agent",
     "demo": "https://x.com/thedivyasoni/status/2045856430318907670",
-    "featured": false,
     "writeup": {
       "architecture": "User sends a text or voice message to a Telegram bot. Text messages are passed directly to an LLM (Qwen via OpenRouter) which extracts structured expense fields (amount, category, notes) and returns JSON. Voice notes are first transcribed via Replicate (GPT-4o Mini Transcribe), then follow the same LLM path. Validated output is appended as a row to Google Sheets via the Sheets API. A /summary command aggregates the current month's spend by category and uses the LLM to generate a one-line observation.",
       "implementation": "Bot built with python-telegram-bot. LLM calls go through OpenRouter's chat completions API using Qwen-Turbo, with a strict system prompt that enforces JSON output and defines 11 spending categories. Output validation checks amount, category membership, and notes length before writing to Sheets. Speech-to-text handled asynchronously via Replicate. The system prompt includes explicit prompt injection defences so user messages are treated as data only. /undo deletes the most recently appended Sheets row.",
       "results": "Handles the full loop — voice or text in, categorised row in Google Sheets out — with no manual data entry. Works reliably for casual phrasing like '500 on groceries' or 'paid 1200 for electricity'. The main limitation is dependency on OpenRouter uptime and Replicate latency for voice notes (~2-4s transcription round-trip)."
     }
   }
-
-
 ]

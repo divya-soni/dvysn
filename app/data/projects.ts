@@ -1,4 +1,4 @@
-import projectsData from '@/content/projects.json';
+import projectsData from "@/content/projects.json";
 
 export interface ProjectWriteup {
   architecture?: string;
@@ -18,22 +18,25 @@ export interface Project {
   description: string;
   tags: string[];
   date: string;
-  year: string;
-  role: string;
-  language: string;
-  stars: number;
   github: string | null;
   demo: string | null;
   live?: string | null;
-  featured: boolean;
   writeup?: ProjectWriteup;
   snippet?: ProjectSnippet;
 }
 
-export const projects = [...(projectsData as Project[])].sort((a, b) =>
-  b.date.localeCompare(a.date),
-);
+export type NumberedProject = Project & { number: string };
 
-export function getProject(slug: string): Project | undefined {
+const oldestFirst = [...(projectsData as Project[])].sort((a, b) => a.date.localeCompare(b.date));
+
+/**
+ * Projects, newest first. Each keeps a stable number in the order it was made,
+ * so 01 is the oldest and a new project simply becomes the next number.
+ */
+export const projects: NumberedProject[] = oldestFirst
+  .map((p, i) => ({ ...p, number: String(i + 1).padStart(2, "0") }))
+  .reverse();
+
+export function getProject(slug: string): NumberedProject | undefined {
   return projects.find((p) => p.slug === slug);
 }

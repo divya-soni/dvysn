@@ -22,6 +22,7 @@ export default function SiteFooter() {
             </a>
           ))}
         </div>
+        <p className="colophon">Drawn with Rough.js. Set in Sorts Mill Goudy and Courier Prime.</p>
       </div>
     </footer>
   );
