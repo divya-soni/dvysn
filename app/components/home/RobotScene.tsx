@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { InkFrames } from "../ink/Ink";
 import { drawRobot, drawScene, SCENE } from "@/lib/ink/robot";
+import { callJarvis, JARVIS_MS, JARVIS_ON } from "@/lib/ink/jarvis";
 import { attachBoil, drawOn, prefersReducedMotion } from "@/lib/ink/motion";
 
 const IDLE_MS = 25_000;
@@ -34,7 +35,7 @@ export default function RobotScene() {
     const body = robotRef.current;
     if (!svg || !body) return;
     const reduce = prefersReducedMotion();
-    const s = { x: SCENE.start, dir: 1, energy: 0, phase: 0, winds: 0, key: 0, walking: false };
+    const s = { x: SCENE.start, dir: 1, energy: 0, phase: 0, winds: 0, key: 0, walking: false, saluting: false };
     let raf = 0;
     let last = 0;
     let release: number | undefined;
@@ -50,7 +51,7 @@ export default function RobotScene() {
       const swing = s.walking ? Math.sin(s.phase) * 14 : 0;
       layer("leg-l", `rotate(${swing.toFixed(1)}deg)`);
       layer("leg-r", `rotate(${(-swing).toFixed(1)}deg)`);
-      layer("arm", `rotate(${(-swing * 0.7).toFixed(1)}deg)`);
+      layer("arm", `rotate(${s.saluting ? -146 : (-swing * 0.7).toFixed(1)}deg)`);
       layer("key", `rotate(${s.key.toFixed(1)}deg)`);
       const btn = btnRef.current;
       if (btn) btn.style.left = `${((s.x + SCENE.key.x * s.dir) / SCENE.w) * 100}%`;
@@ -157,9 +158,25 @@ export default function RobotScene() {
     };
     const onActivity = () => wake();
 
+    // when the power-on happens, the robot salutes
+    let saluteTimer: number | undefined;
+    const salute = () => {
+      wake();
+      s.saluting = true;
+      body.classList.add("saluting");
+      place();
+      window.clearTimeout(saluteTimer);
+      saluteTimer = window.setTimeout(() => {
+        s.saluting = false;
+        place();
+        saluteTimer = window.setTimeout(() => body.classList.remove("saluting"), 400);
+      }, JARVIS_MS - 700);
+    };
+
     window.addEventListener("pointermove", onPointer, { passive: true });
     window.addEventListener("keydown", onActivity);
     window.addEventListener("scroll", onActivity, { passive: true });
+    window.addEventListener(JARVIS_ON, salute);
     drawOn(svg, { dur: 1000, spread: 1600 });
     const unboil = attachBoil(svg, svg, "hover");
     wake();
@@ -170,6 +187,8 @@ export default function RobotScene() {
       window.removeEventListener("scroll", onActivity);
       cancelAnimationFrame(raf);
       cancelAnimationFrame(lookRaf);
+      window.removeEventListener(JARVIS_ON, salute);
+      window.clearTimeout(saluteTimer);
       window.clearTimeout(release);
       window.clearTimeout(idle);
       unboil();
@@ -197,6 +216,16 @@ export default function RobotScene() {
           onClick={() => windRef.current()}
         >
           <InkFrames drawing={robot} />
+          <circle
+            cx={-2}
+            cy={-135}
+            r={20}
+            className="antenna-hit"
+            onClick={(e) => {
+              e.stopPropagation();
+              callJarvis();
+            }}
+          />
           <g ref={pupilRef} transform={`translate(${SCENE.eye.x} ${SCENE.eye.y})`} style={{ opacity: asleep ? 0 : 1 }}>
             <circle r={3.2} className="amber-dot" />
           </g>

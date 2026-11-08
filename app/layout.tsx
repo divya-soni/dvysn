@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Courier_Prime, Sorts_Mill_Goudy } from "next/font/google";
+import Jarvis from "./components/Jarvis";
 import SiteFooter from "./components/SiteFooter";
 import SiteHeader from "./components/SiteHeader";
 import "./globals.css";
@@ -46,6 +47,7 @@ export default function RootLayout({
         <SiteHeader />
         {children}
         <SiteFooter />
+        <Jarvis />
       </body>
     </html>
   );

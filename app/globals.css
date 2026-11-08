@@ -788,6 +788,141 @@
     animation: spin 50s linear infinite;
   }
 
+  /* easter egg: type "jarvis" */
+  .jarvis-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    animation: jarvis-fade 3.4s ease both;
+  }
+  .jarvis-overlay[data-place="left"] {
+    justify-items: start;
+    padding-left: 3vw;
+  }
+  .jarvis-overlay[data-place="right"] {
+    justify-items: end;
+    padding-right: 3vw;
+  }
+  .jarvis-overlay[data-place="top"] {
+    align-items: start;
+    padding-top: 3vh;
+  }
+  .jarvis-overlay[data-place="bottom"] {
+    align-items: end;
+    padding-bottom: 3vh;
+  }
+  .jarvis-overlay svg {
+    display: block;
+    width: min(84vw, 72vh, 500px);
+    height: auto;
+    overflow: visible;
+  }
+  .jarvis-overlay .spin,
+  .jarvis-overlay .spin-rev {
+    transform-box: view-box;
+    transform-origin: 240px 240px;
+  }
+  .jarvis-overlay .spin {
+    animation: spin 7s linear infinite;
+  }
+  .jarvis-overlay .spin-rev {
+    animation: spin 5s linear infinite reverse;
+  }
+  .ink-svg text.jarvis-hello {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 27px;
+    letter-spacing: 0;
+    fill: var(--text);
+  }
+  html.jarvis .t-ink {
+    animation: jarvis-ink 3.4s ease both;
+  }
+  html.jarvis .schematic .spin,
+  html.jarvis .year-ring .spin {
+    animation: spin 3.4s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+  }
+  html.jarvis .robot .signal {
+    animation: breathe 0.45s ease-in-out infinite;
+  }
+  .robot.saluting .arm {
+    transition: transform 0.35s ease;
+  }
+  .antenna-hit {
+    fill: transparent;
+    cursor: pointer;
+  }
+
+  /* easter egg: the lost robot on the page-not-found screen */
+  .lost-stage {
+    position: relative;
+    margin-top: 1rem;
+  }
+  .lost-stage > svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .lost-stage .robot {
+    cursor: default;
+  }
+  .lost-stage .layer[class*="fp-"],
+  .lost-stage .layer.sign-lit {
+    transition: opacity 0.7s ease;
+  }
+  .lost-map {
+    transform: rotate(180deg);
+    transition: transform 0.8s cubic-bezier(0.5, 0, 0.2, 1);
+  }
+  .lost-map[data-turned="1"] {
+    transform: rotate(0deg);
+  }
+  .ink-svg .lost-map text {
+    font-size: 6.5px;
+    letter-spacing: 0.08em;
+    fill: var(--text);
+  }
+  .ink-svg text.lost-q {
+    font-family: var(--serif);
+    font-size: 34px;
+    letter-spacing: 0;
+    animation: breathe 2.2s ease-in-out infinite;
+  }
+  .lost-map-btn {
+    position: absolute;
+    width: max(44px, 12%);
+    aspect-ratio: 4 / 3;
+    transform: translate(-50%, -50%);
+    border: 0;
+    background: transparent;
+  }
+  .lost-home {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    transform: translate(-50%, -50%);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .lost-way {
+    margin: 1.5rem 0 0;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+  .lost-way a {
+    color: var(--text);
+    text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  }
+
   /* notes */
   .article {
     max-width: var(--measure);
@@ -984,6 +1119,31 @@
   }
 }
 
+@keyframes jarvis-fade {
+  0% {
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  84% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes jarvis-ink {
+  0%,
+  100% {
+    color: var(--ink);
+  }
+  12%,
+  72% {
+    color: var(--amber);
+  }
+}
+
 /* the lamp's circular reveal between day and night */
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -1018,6 +1178,13 @@
   }
   .spin,
   .pulse,
+  .jarvis-overlay,
+  .jarvis-overlay .spin,
+  .jarvis-overlay .spin-rev,
+  html.jarvis .t-ink,
+  html.jarvis .schematic .spin,
+  html.jarvis .year-ring .spin,
+  .ink-svg text.lost-q,
   .wind-hint,
   .zzz text {
     animation: none !important;
