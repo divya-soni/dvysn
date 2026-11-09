@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState, type FormEvent } from "react";
 import Ink, { MarkPaths } from "../ink/Ink";
 import { drawMemgpt, MEM, memMarks, slot } from "@/lib/ink/schematics/memgpt";
+import { sound } from "@/lib/sound";
 import { useInk } from "./useInk";
 
 const SAMPLES = [
@@ -43,6 +44,9 @@ export default function MemGPT() {
     setDraft("");
     setMsgs((m) => [...m, { id: nextId.current++, text }]);
     const total = n + 1;
+    sound.type(Math.min(text.length, 6));
+    if (total > MEM.ctx.cap + MEM.recall.cap) sound.thud();
+    else if (total > MEM.ctx.cap) sound.whoosh();
     if (total > MEM.ctx.cap + MEM.recall.cap) setLog(`SUMMARISED “${chip(msgs[recallStart].text)}” INTO THE ARCHIVE`);
     else if (total > MEM.ctx.cap) setLog(`EVICTED “${chip(msgs[ctxStart].text)}” TO RECALL`);
     else setLog(`${total} MESSAGES IN CONTEXT`);

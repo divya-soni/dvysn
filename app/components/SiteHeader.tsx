@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Lamp from "./Lamp";
+import SoundToggle from "./SoundToggle";
 
 const routes = [
   { href: "/projects", label: "Work" },
@@ -30,6 +31,7 @@ export default function SiteHeader() {
               </Link>
             );
           })}
+          <SoundToggle />
           <Lamp />
         </nav>
       </div>

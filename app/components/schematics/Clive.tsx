@@ -4,6 +4,7 @@ import { useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from
 import Ink, { MarkPaths } from "../ink/Ink";
 import { CLIVE, clivePlayhead, drawClive, drawCliveSpoilers } from "@/lib/ink/schematics/clive";
 import { svgPoint } from "@/lib/ink/motion";
+import { sound } from "@/lib/sound";
 import { clamp, useInk, useSvgId } from "./useInk";
 
 function clock(t: number) {
@@ -25,13 +26,16 @@ export default function Clive() {
 
   const seek = (e: PointerEvent) => {
     const p = svgPoint(ref.current!, e);
-    setT(clamp((p.x - line.x0) / (line.x1 - line.x0), 0, 1));
+    const next = clamp((p.x - line.x0) / (line.x1 - line.x0), 0, 1);
+    if (Math.floor(next * 9) !== Math.floor(t * 9)) sound.tick();
+    setT(next);
   };
   const onKey = (e: KeyboardEvent<SVGSVGElement>) => {
     if (e.key === "ArrowRight") setT((v) => clamp(v + 0.02, 0, 1));
     else if (e.key === "ArrowLeft") setT((v) => clamp(v - 0.02, 0, 1));
     else return;
     e.preventDefault();
+    sound.tick();
   };
 
   const done = t >= 0.995;

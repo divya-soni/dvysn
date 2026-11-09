@@ -4,6 +4,7 @@ import { useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from
 import Ink from "../ink/Ink";
 import { drawPngToPsd, PSD } from "@/lib/ink/schematics/pngToPsd";
 import { svgPoint } from "@/lib/ink/motion";
+import { sound } from "@/lib/sound";
 import { clamp, useInk } from "./useInk";
 
 export default function PngToPsd() {
@@ -18,13 +19,16 @@ export default function PngToPsd() {
   const follow = (e: PointerEvent<SVGSVGElement>) => {
     if (e.pointerType !== "mouse" && !pressed.current) return;
     const p = svgPoint(ref.current!, e);
-    setT(clamp((p.x - 60) / 320, 0, 1));
+    const next = clamp((p.x - 60) / 320, 0, 1);
+    if (Math.round(next * 4) !== Math.round(t * 4)) sound.paper();
+    setT(next);
   };
   const onKey = (e: KeyboardEvent<SVGSVGElement>) => {
     if (e.key === "ArrowRight") setT((v) => clamp(v + 0.1, 0, 1));
     else if (e.key === "ArrowLeft") setT((v) => clamp(v - 0.1, 0, 1));
     else return;
     e.preventDefault();
+    sound.paper();
   };
 
   const offset = (i: number) => ({ x: i * step.x * t, y: i * step.y * t });

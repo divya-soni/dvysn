@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerE
 import { InkFrames } from "../ink/Ink";
 import { polar, rad, sketch } from "@/lib/ink/sketch";
 import { attachBoil, drawOn, svgPoint } from "@/lib/ink/motion";
+import { sound } from "@/lib/sound";
 
 const MON = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 const MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -166,7 +167,10 @@ export default function YearRing({ days, end, total, shipped, lastPush }: RingPr
   };
   const monthOf = (j: number) => months.findIndex((m) => j >= m.from && j <= m.to);
   const turnTo = (m: number) => {
-    if (m !== month) navigator.vibrate?.(6);
+    if (m !== month) {
+      navigator.vibrate?.(6);
+      sound.tick();
+    }
     setMonth(m);
     setDay(null);
   };

@@ -4,6 +4,7 @@ import { useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from
 import Ink, { MarkPaths } from "../ink/Ink";
 import { drawMira, drawMiraNotes, MIRA, miraLens } from "@/lib/ink/schematics/mira";
 import { svgPoint } from "@/lib/ink/motion";
+import { sound } from "@/lib/sound";
 import { clamp, useInk, useSvgId } from "./useInk";
 
 const NOTES: { x: number; y: number; text: string; anchor?: "start" | "middle" | "end" }[] = [
@@ -54,6 +55,7 @@ export default function Mira() {
         label="Mira model: an open textbook. A lens moves over the page and reveals notes explaining what is under it."
         tabIndex={0}
         onKeyDown={onKey}
+        onPointerDown={() => sound.tink()}
         onPointerMove={(e) => {
           if (e.pointerType === "mouse" || dragging.current) place(e);
         }}

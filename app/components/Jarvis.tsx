@@ -5,6 +5,7 @@ import Boil from "./ink/Boil";
 import Ink from "./ink/Ink";
 import { drawJarvisRing, JARVIS_CALL, JARVIS_MS, JARVIS_ON } from "@/lib/ink/jarvis";
 import { drawOn } from "@/lib/ink/motion";
+import { sound } from "@/lib/sound";
 
 const WORD = "jarvis";
 const MAX_GAP_MS = 1500;
@@ -69,6 +70,7 @@ export default function Jarvis() {
       setOn({ hello: greeting(), count: drawings.length, place: placement() });
       root.classList.add("jarvis");
       window.dispatchEvent(new Event(JARVIS_ON));
+      sound.powerOn();
       drawings.forEach((svg) => drawOn(svg, { dur: 700, spread: 1100 }));
       document.querySelectorAll(".sweep").forEach((el) => {
         el.classList.remove("go");

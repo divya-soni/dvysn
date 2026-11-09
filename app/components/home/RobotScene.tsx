@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { InkFrames } from "../ink/Ink";
 import { drawRobot, drawScene, SCENE } from "@/lib/ink/robot";
+import { sound } from "@/lib/sound";
 import { callJarvis, JARVIS_MS, JARVIS_ON } from "@/lib/ink/jarvis";
 import { attachBoil, drawOn, prefersReducedMotion } from "@/lib/ink/motion";
 
@@ -83,14 +84,18 @@ export default function RobotScene() {
       const prev = s.x;
       s.x += s.dir * speed * dt;
       s.energy -= speed * dt;
+      const stride = Math.floor(s.phase / Math.PI);
       s.phase += dt * 11;
+      if (Math.floor(s.phase / Math.PI) !== stride) sound.step(stride % 2 === 0);
       s.key -= speed * dt * 2.2;
       if (s.x > SCENE.max) {
         s.x = SCENE.max;
         s.dir = -1;
+        sound.tonk();
       } else if (s.x < SCENE.min) {
         s.x = SCENE.min;
         s.dir = 1;
+        sound.tonk();
       }
       reveal(prev, s.x);
       if (s.energy <= 0) {
@@ -127,6 +132,7 @@ export default function RobotScene() {
       wake();
       s.winds = Math.min(MAX_WINDS, s.winds + 1);
       s.key += 90;
+      sound.ratchet(s.winds);
       place();
       window.clearTimeout(release);
       release = window.setTimeout(go, 650);

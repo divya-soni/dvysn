@@ -5,6 +5,7 @@ import Ink, { MarkPaths } from "../ink/Ink";
 import { drawPromptVersioning, PV, pvDot } from "@/lib/ink/schematics/promptVersioning";
 import { polar } from "@/lib/ink/sketch";
 import { svgPoint } from "@/lib/ink/motion";
+import { sound } from "@/lib/sound";
 import { clamp, useInk } from "./useInk";
 
 const nearest = (r: number) => clamp(Math.round((r - PV.r(0)) / 20), 0, PV.versions - 1);
@@ -23,6 +24,8 @@ export default function PromptVersioning() {
 
   const commit = (i: number) => {
     if (i !== prod) setLog(i > prod ? `PROMOTED v${i + 1} TO PRODUCTION` : `ROLLED BACK TO v${i + 1}`);
+    if (i > prod) sound.promote();
+    else if (i < prod) sound.rollback();
     setProd(i);
   };
   const radius = (e: PointerEvent) => {
@@ -36,7 +39,10 @@ export default function PromptVersioning() {
     setDragR(clamp(radius(e), PV.r(0), PV.r(PV.versions - 1)));
   };
   const onMove = (e: PointerEvent<SVGCircleElement>) => {
-    if (dragR !== null) setDragR(clamp(radius(e), PV.r(0), PV.r(PV.versions - 1)));
+    if (dragR === null) return;
+    const next = clamp(radius(e), PV.r(0), PV.r(PV.versions - 1));
+    if (nearest(next) !== nearest(dragR)) sound.tick();
+    setDragR(next);
   };
   const onUp = (e: PointerEvent<SVGCircleElement>) => {
     e.stopPropagation();

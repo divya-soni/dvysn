@@ -4,6 +4,7 @@ import { useRef, useState, useSyncExternalStore, type PointerEvent } from "react
 import { InkFrames, MarkPaths } from "./ink/Ink";
 import { sketch } from "@/lib/ink/sketch";
 import { prefersReducedMotion } from "@/lib/ink/motion";
+import { sound } from "@/lib/sound";
 
 const PAPER = { light: "#F6F2E9", dark: "#0D1520" };
 const PULL = 22; // how far the chain stretches, in drawing units
@@ -103,6 +104,7 @@ export default function Lamp() {
     return r ? { x: r.left + r.width * 0.75, y: r.top + r.height * 0.7 } : { x: innerWidth, y: 0 };
   };
   const toggle = () => {
+    sound.lamp();
     const o = origin();
     switchTheme(!dark, o.x, o.y);
   };
@@ -115,6 +117,7 @@ export default function Lamp() {
   const onPointerMove = (e: PointerEvent<HTMLButtonElement>) => {
     if (!drag.current) return;
     const dy = Math.max(0, Math.min(PULL, (e.clientY - drag.current.y) * 0.8));
+    if (dy > 3 && !drag.current.moved) sound.chain();
     if (dy > 3) drag.current.moved = true;
     setPull(dy);
   };

@@ -6,6 +6,7 @@ import { InkFrames } from "./ink/Ink";
 import { drawLost, drawMap, LOST } from "@/lib/ink/lost";
 import { attachBoil, drawOn, prefersReducedMotion } from "@/lib/ink/motion";
 import { drawRobot, SCENE } from "@/lib/ink/robot";
+import { sound } from "@/lib/sound";
 
 const HOLDING_MAP = { arm: { transform: "rotate(-22deg)" } };
 const SPEED = 62;
@@ -58,13 +59,16 @@ export default function LostRobot() {
       place(0);
       legs(0);
       setArrived(true);
+      sound.chime();
     };
     const step = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       const prev = x;
       x += SPEED * dt;
+      const stride = Math.floor(phase / Math.PI);
       phase += dt * 11;
+      if (Math.floor(phase / Math.PI) !== stride) sound.step(stride % 2 === 0);
       reveal(prev, x);
       if (x >= LOST.end) {
         arrive();
@@ -79,6 +83,7 @@ export default function LostRobot() {
       if (started) return;
       started = true;
       setTurned(true);
+      sound.paper();
       homeRef.current?.focus({ preventScroll: true });
       timer = window.setTimeout(
         () => {

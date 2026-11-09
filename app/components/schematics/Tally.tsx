@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState, type FormEvent } from "react";
 import Ink from "../ink/Ink";
 import { drawTally, TALLY } from "@/lib/ink/schematics/tally";
+import { sound } from "@/lib/sound";
 import { useInk } from "./useInk";
 
 type Row = { id: number; amt: number; cat: string; note: string };
@@ -72,10 +73,12 @@ export default function Tally() {
       return;
     }
     setCollapsing(true);
+    sound.type(Math.min(text.length, 6));
     window.setTimeout(() => {
       setRows((r) => [{ ...row, id: nextId.current++ }, ...r].slice(0, TALLY.rows));
       setReply(`LOGGED UNDER ${row.cat}`);
       setCollapsing(false);
+      sound.bell();
     }, 420);
   };
 

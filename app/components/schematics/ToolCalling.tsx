@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState, type FormEvent } from "react";
 import Ink from "../ink/Ink";
 import { drawToolCalling, TC } from "@/lib/ink/schematics/toolCalling";
+import { sound } from "@/lib/sound";
 import { useInk } from "./useInk";
 
 type Result = { folders: string[]; token: string; reply: string; touched: string | null };
@@ -56,7 +57,12 @@ export default function ToolCalling() {
   const submit = (e: FormEvent) => {
     e.preventDefault();
     if (!draft.trim()) return;
-    setState((s) => run(draft, s.folders, s.touched));
+    const next = run(draft, state.folders, state.touched);
+    setState(next);
+    sound.type(5);
+    if (next.token.startsWith("‹mkdir")) sound.pop();
+    else if (next.token.startsWith("‹rm")) sound.whoosh();
+    else if (next.token.startsWith("‹mv")) sound.paper();
     setDraft("");
   };
 

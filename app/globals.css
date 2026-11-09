@@ -171,6 +171,23 @@
     align-items: flex-start;
     gap: 1.5rem;
   }
+  .sound-toggle {
+    width: 44px;
+    height: 44px;
+    margin-top: 0.8rem;
+    padding: 8px;
+    border: 0;
+    background: none;
+  }
+  .sound-toggle svg {
+    display: block;
+    width: 28px;
+    height: 28px;
+    overflow: visible;
+  }
+  .sound-toggle[data-muted="1"] .t-ink {
+    color: var(--pencil);
+  }
   .lamp {
     border: 0;
     padding: 0;
